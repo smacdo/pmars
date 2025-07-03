@@ -387,7 +387,8 @@ extern int console_fd;
 #endif
 
 #if defined(CURSESGRAPHX)
-#include <ncurses.h>
+#define NCURSES_OPAQUE 0
+#include <curses.h>
 #if defined(A_NORMAL) || defined(A_BOLD) || defined(A_REVERSE)
 #define ATTRIBUTE
 #endif                                /* A_* */

@@ -1,12 +1,13 @@
 # generic UNIX makefile
-CC = gcc			# req. for linux
+CC = gcc	-Wno-deprecated-non-prototype	\
+ -Wno-unsequenced 	# req. for linux
 #CC = cc				# if you don't have gcc
 # Configuration options:
 #
 # No.   Name            Incompatible with   Description
-# (1)   -DSERVER        2                   disables cdb debugger (koth server 
+# (1)   -DSERVER        2                   disables cdb debugger (koth server
 #                                           version)
-# (2)   -DGRAPHX        1                   enables platform specific core 
+# (2)   -DGRAPHX        1                   enables platform specific core
 #                                           graphics
 # (3)   -DKEYPRESS                          only for curses display on SysV:
 #                                           enter cdb upon keypress (use if
@@ -17,7 +18,7 @@ CC = gcc			# req. for linux
 # (7)   -DPERMUTATE                         enables -P switch
 # (9)   -DRWLIMIT                           enables read/write limits
 
-# CFLAGS = -O -DEXT94 -DXWINGRAPHX -DPERMUTATE -DRWLIMIT 
+# CFLAGS = -O -DEXT94 -DXWINGRAPHX -DPERMUTATE -DRWLIMIT
 CFLAGS = -O -DEXT94 -DPERMUTATE -DRWLIMIT -DGRAPHX -DCURSESGRAPHX
 LFLAGS = -x
 LIB = -lncurses
@@ -28,9 +29,9 @@ LIB = -lncurses
 .SUFFIXES: .o .c .c~ .man .doc .6
 MAINFILE = pmars
 
-HEADER = global.h config.h asm.h sim.h 
+HEADER = global.h config.h asm.h sim.h
 OBJ1 = pmars.o asm.o eval.o disasm.o cdb.o sim.o pos.o
-OBJ2 = clparse.o global.o token.o 
+OBJ2 = clparse.o global.o token.o
 OBJ3 = str_eng.o
 
 all: flags $(MAINFILE)
@@ -57,10 +58,9 @@ lnxdisp.c: lnxdisp.h
 $(OBJ1) $(OBJ2) $(OBJ3): Makefile config.h global.h
 
 .c.o:
-	@echo Compiling $*.o 
+	@echo Compiling $*.o
 	@$(CC) $(CFLAGS) -c $*.c
 
 
 clean:
 	rm -f $(OBJ1) $(OBJ2) $(OBJ3) core
-
