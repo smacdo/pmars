@@ -28,6 +28,7 @@
 #include "global.h"
 #include "sim.h"
 #include <time.h>
+#include <unistd.h>
 
 #ifdef unix
 #include <signal.h>
@@ -398,6 +399,7 @@ register  int     temp;                        /* general purpose temporary vari
     display_clear();
     /* the inner loop of execution */
     do {                        /* each cycle */
+			usleep(100); // TODO: make this configurable
       display_cycle();
      // progCnt = *(W->taskHead++);
      // IR = memory[progCnt];        /* copy instruction into register */
