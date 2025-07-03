@@ -17,11 +17,13 @@ CC = gcc			# req. for linux
 # (7)   -DPERMUTATE                         enables -P switch
 # (9)   -DRWLIMIT                           enables read/write limits
 
-CFLAGS = -O -DEXT94 -DXWINGRAPHX -DPERMUTATE -DRWLIMIT 
+# CFLAGS = -O -DEXT94 -DXWINGRAPHX -DPERMUTATE -DRWLIMIT 
+CFLAGS = -O -DEXT94 -DPERMUTATE -DRWLIMIT -DGRAPHX -DCURSESGRAPHX
 LFLAGS = -x
+LIB = -lncurses
 # LIB = -lcurses -ltermlib		# enable this one for curses display
 # LIB = -lvgagl -lvga			# enable this one for Linux/SVGA
-LIB = -L/usr/X11R6/lib -lX11		# enable this one for X11
+# LIB = -L/usr/X11R6/lib -lX11		# enable this one for X11
 
 .SUFFIXES: .o .c .c~ .man .doc .6
 MAINFILE = pmars

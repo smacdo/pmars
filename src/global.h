@@ -387,7 +387,7 @@ extern int console_fd;
 #endif
 
 #if defined(CURSESGRAPHX)
-#include <curses.h>
+#include <ncurses.h>
 #if defined(A_NORMAL) || defined(A_BOLD) || defined(A_REVERSE)
 #define ATTRIBUTE
 #endif                                /* A_* */
