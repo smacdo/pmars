@@ -1,6 +1,5 @@
 # generic UNIX makefile
-CC = gcc	-Wno-deprecated-non-prototype	\
- -Wno-unsequenced 	# req. for linux
+CC = gcc
 #CC = cc				# if you don't have gcc
 # Configuration options:
 #

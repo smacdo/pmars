@@ -1,6 +1,6 @@
 /* pMARS -- a portable Memory Array Redcode Simulator
- * Copyright (C) 1993-1996 Albert Ma, Na'ndor Sieben, Stefan Strack and Mintardjo Wangsawidjaja
- * Copyright (C) 2000 Ilmari Karonen
+ * Copyright (C) 1993-1996 Albert Ma, Na'ndor Sieben, Stefan Strack and
+ * Mintardjo Wangsawidjaja Copyright (C) 2000 Ilmari Karonen
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,77 +27,78 @@
 #endif
 
 /* We might need this var */
-int     errorcode = SUCCESS;
-int     errorlevel = WARNING;
-char    errmsg[MAXALLCHAR];
+int errorcode = SUCCESS;
+int errorlevel = WARNING;
+char errmsg[MAXALLCHAR];
 
 /* Some parameters */
-int     warriors;
-ADDR_T  coreSize;
-int     taskNum;
-ADDR_T  instrLim;
-ADDR_T  separation;
-int     rounds;
-long    cycles;
+int warriors;
+ADDR_T coreSize;
+int taskNum;
+ADDR_T instrLim;
+ADDR_T separation;
+int rounds;
+long cycles;
 #ifdef RWLIMIT
-ADDR_T  readLimit, writeLimit;
+ADDR_T readLimit, writeLimit;
 #endif
 
-int     cmdMod = 0;                /* cdb command flag: 0, RESET, SKIP */
-S32_T   seed;
-int     useExtRNG = 0;
+int cmdMod = 0; /* cdb command flag: 0, RESET, SKIP */
+S32_T seed;
+int useExtRNG = 0;
 
-int     SWITCH_e;
-int     SWITCH_b;
-int     SWITCH_k;
-int     SWITCH_8;
-int     SWITCH_f;
-char   *SWITCH_F;
-ADDR_T  SWITCH_Fnum;
-int     SWITCH_V;
-int     SWITCH_o;
-int     SWITCH_Q = -1;                /* not set */
-char   *SWITCH_eq = DEFAULTSCORE;
+int SWITCH_e;
+int SWITCH_b;
+int SWITCH_k;
+int SWITCH_8;
+int SWITCH_f;
+char *SWITCH_F;
+ADDR_T SWITCH_Fnum;
+int SWITCH_V;
+int SWITCH_o;
+int SWITCH_Q = -1; /* not set */
+char *SWITCH_eq = DEFAULTSCORE;
 #ifdef VMS
-int     SWITCH_D;
+int SWITCH_D;
 #endif
 #ifdef PERMUTATE
-int     SWITCH_P;
+int SWITCH_P;
 #endif
-int	SWITCH_A;
+int SWITCH_A;
 
-#if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) \
-    || defined(XWINGRAPHX)
-int     SWITCH_v;
-int     displayLevel;
-int     displayMode;
-int     displaySpeed;
+#if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) ||  \
+    defined(XWINGRAPHX)
+int SWITCH_v;
+int displayLevel;
+int displayMode;
+int displaySpeed;
 #if defined(CURSESGRAPHX)
 /* This variable determines how often the screen is refreshed (wrefresh()).
    10 means the screen is refreshed every 20th cycle. Higher numbers mean
    faster but jerkier display */
-int     refreshInterval;
-int     refIvalAr[SPEEDLEVELS] = {50, 20, 10, 3, 2, 1, 1, 1, 1};
+int refreshInterval;
+int refIvalAr[SPEEDLEVELS] = {50, 20, 10, 3, 2, 1, 1, 1, 1};
 #else
-int     keyDelay;
+int keyDelay;
 #if defined(XWINGRAPHX)
-int     keyDelayAr[SPEEDLEVELS] = {255, 20, 0, 0, 0, 0, 0, 0, 0};
+int keyDelayAr[SPEEDLEVELS] = {255, 20, 0, 0, 0, 0, 0, 0, 0};
 #else
-int     keyDelayAr[SPEEDLEVELS] = {25, 20, 0, 0, 0, 0, 0, 0, 0};
+int keyDelayAr[SPEEDLEVELS] = {25, 20, 0, 0, 0, 0, 0, 0, 0};
 #endif
 unsigned long loopDelay;
-unsigned long loopDelayAr[SPEEDLEVELS] = {1, 1, 1, 100, 500, 2500, 10000, 40000, 100000};
+unsigned long loopDelayAr[SPEEDLEVELS] = {1,    1,     1,     100,   500,
+                                          2500, 10000, 40000, 100000};
 #endif
 #endif
 
-int     inCdb = FALSE;
-int     debugState = NOBREAK;
-int     copyDebugInfo = TRUE;
-#if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) \
-    || defined(XWINGRAPHX)
-int     inputRedirection = FALSE;
+int inCdb = FALSE;
+int debugState = NOBREAK;
+int copyDebugInfo = TRUE;
+#if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) ||  \
+    defined(XWINGRAPHX)
+int inputRedirection = FALSE;
 #endif
-mem_struct INITIALINST;                /* initialize to DAT.F $0,$0 */
+mem_struct INITIALINST; /* initialize to DAT.F $0,$0 */
 
 warrior_struct warrior[MAXWARRIOR];
 #ifdef DOS16
@@ -105,4 +106,29 @@ ADDR_T far *pSpace[MAXWARRIOR];
 #else
 ADDR_T *pSpace[MAXWARRIOR];
 #endif
-ADDR_T  pSpaceSize;
+ADDR_T pSpaceSize;
+
+/* Energy system global variables */
+int SWITCH_E = 0; /* energy system disabled by default */
+long defaultEnergy = DEFAULT_ENERGY;
+int energyCosts[19] = {
+    ENERGY_COST_MOV, /* MOV */
+    ENERGY_COST_ADD, /* ADD */
+    ENERGY_COST_SUB, /* SUB */
+    ENERGY_COST_MUL, /* MUL */
+    ENERGY_COST_DIV, /* DIV */
+    ENERGY_COST_MOD, /* MOD */
+    ENERGY_COST_JMZ, /* JMZ */
+    ENERGY_COST_JMN, /* JMN */
+    ENERGY_COST_DJN, /* DJN */
+    ENERGY_COST_CMP, /* CMP */
+    ENERGY_COST_SLT, /* SLT */
+    ENERGY_COST_SPL, /* SPL */
+    ENERGY_COST_DAT, /* DAT */
+    ENERGY_COST_JMP, /* JMP */
+    ENERGY_COST_SEQ, /* SEQ */
+    ENERGY_COST_SNE, /* SNE */
+    ENERGY_COST_NOP, /* NOP */
+    ENERGY_COST_LDP, /* LDP */
+    ENERGY_COST_STP  /* STP */
+};
