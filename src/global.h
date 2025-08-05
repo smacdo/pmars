@@ -250,7 +250,9 @@ enum op {
   SNE,
   NOP,
   LDP,
-  STP
+  STP,
+  SLP,
+  ZAP
 }; /* has to match asm.c:opname[] */
 
 enum modifier {
@@ -284,6 +286,9 @@ enum modifier {
 #define ENERGY_COST_NOP 1
 #define ENERGY_COST_LDP 3
 #define ENERGY_COST_STP 3
+#define ENERGY_COST_SLP 1
+#define ENERGY_COST_ZAP 3 /* base cost, multiplied by memory locations zeroed  \
+                           */
 
 #ifdef SMALLMEM
 typedef unsigned short ADDR_T;
@@ -412,7 +417,7 @@ extern ADDR_T pSpaceSize;
 /* Energy system global variables */
 extern int SWITCH_E;        /* enable energy system */
 extern long defaultEnergy;  /* default energy per warrior */
-extern int energyCosts[19]; /* energy costs per opcode */
+extern int energyCosts[21]; /* energy costs per opcode */
 
 /* ***********************************************************************
    display define's, declarations and typedefs

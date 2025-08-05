@@ -111,7 +111,7 @@ ADDR_T pSpaceSize;
 /* Energy system global variables */
 int SWITCH_E = 0; /* energy system disabled by default */
 long defaultEnergy = DEFAULT_ENERGY;
-int energyCosts[19] = {
+int energyCosts[21] = {
     ENERGY_COST_MOV, /* MOV */
     ENERGY_COST_ADD, /* ADD */
     ENERGY_COST_SUB, /* SUB */
@@ -130,5 +130,7 @@ int energyCosts[19] = {
     ENERGY_COST_SNE, /* SNE */
     ENERGY_COST_NOP, /* NOP */
     ENERGY_COST_LDP, /* LDP */
-    ENERGY_COST_STP  /* STP */
+    ENERGY_COST_STP, /* STP */
+    ENERGY_COST_SLP, /* SLP */
+    ENERGY_COST_ZAP  /* ZAP */
 };

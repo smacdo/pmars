@@ -618,7 +618,9 @@ void simulator1() {
         addrB = progCnt;
         raddrB = progCnt;
         IR.B_value = memory[addrB].B_value;
+#ifdef NEW_MODES
         AB_Value = memory[addrB].A_value;
+#endif
       }
 
       /* After A/B operand evaluation:
@@ -652,7 +654,7 @@ void simulator1() {
       /* Deduct energy cost for this instruction */
       if (SWITCH_E) {
         int opcode = IR.opcode >> 3; /* Extract opcode from combined field */
-        if (opcode < 19) {           /* Ensure we don't go out of bounds */
+        if (opcode < 21) {           /* Ensure we don't go out of bounds */
           int energyCost = energyCosts[opcode];
           W->energy -= energyCost;
         }
@@ -1329,6 +1331,67 @@ void simulator1() {
         set_pspace(ADDRB_AVALUE, IR.A_value);
         break;
 #endif /* PSPACE */
+      /* SLP instruction - sleep for specified cycles with only 1 energy cost */
+      case OP(SLP, mA):
+      case OP(SLP, mB):
+      case OP(SLP, mAB):
+      case OP(SLP, mBA):
+      case OP(SLP, mF):
+      case OP(SLP, mX):
+      case OP(SLP, mI):
+        /* Sleep for IR.A_value cycles, but only use 1 energy total */
+        if (SWITCH_E) {
+          /* We already deducted 1 energy cost above, so sleep without
+           * additional cost */
+          int sleepCycles = IR.A_value;
+          if (sleepCycles > 0) {
+            /* Skip cycles by advancing the cycle counter */
+            cycle -= sleepCycles;
+            if (cycle <= 0) {
+              /* If we've exceeded the cycle limit, end the round */
+              goto nextround;
+            }
+          }
+        }
+        break;
+
+      /* ZAP instruction - zero out memory range */
+      case OP(ZAP, mA):
+      case OP(ZAP, mB):
+      case OP(ZAP, mAB):
+      case OP(ZAP, mBA):
+      case OP(ZAP, mF):
+      case OP(ZAP, mX):
+      case OP(ZAP, mI): {
+        /* ZAP zeros out memory from addrA to addrA + IR.A_value */
+        int zapStart = addrA;
+        int zapCount = IR.A_value;
+        int i;
+
+        /* Limit zap count to prevent excessive energy drain */
+        if (zapCount > coreSize)
+          zapCount = coreSize;
+        if (zapCount < 0)
+          zapCount = 0;
+
+        /* Deduct additional energy: 3 * number of locations zeroed */
+        if (SWITCH_E && zapCount > 0) {
+          W->energy -=
+              (zapCount - 1) *
+              ENERGY_COST_ZAP; /* -1 because base cost already deducted */
+          if (W->energy <= 0) {
+            goto die; /* Warrior runs out of energy */
+          }
+        }
+
+        /* Zero out the memory locations */
+        for (i = 0; i < zapCount; i++) {
+          int zapAddr = (zapStart + i) % coreSize;
+          memory[zapAddr] = INITIALINST; /* Set to DAT.F $0,$0 */
+          display_write(zapAddr);
+        }
+      } break;
+
       case OP(MOV, mI):
         display_read(addrA);
 #ifndef SERVER

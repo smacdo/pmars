@@ -1,6 +1,6 @@
 /* pMARS -- a portable Memory Array Redcode Simulator
- * Copyright (C) 1993-1996 Albert Ma, Na'ndor Sieben, Stefan Strack and Mintardjo Wangsawidjaja
- * Copyright (C) 2000 Ilmari Karonen
+ * Copyright (C) 1993-1996 Albert Ma, Na'ndor Sieben, Stefan Strack and
+ * Mintardjo Wangsawidjaja Copyright (C) 2000 Ilmari Karonen
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,17 +37,18 @@
 #endif
 
 #include <ctype.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
-#include "global.h"
 #include "asm.h"
+#include "global.h"
 
 #ifdef MACGRAPHX
 extern void macputs(char *);
 #endif
 
-#define concat(a,b) (strlen(a)+strlen(b)<MAXALLCHAR?pstrcat((a),(b)):NULL)
+#define concat(a, b)                                                           \
+  (strlen(a) + strlen(b) < MAXALLCHAR ? pstrcat((a), (b)) : NULL)
 
 /*
 #define ASM_DEBUG
@@ -56,135 +57,170 @@ extern void macputs(char *);
 /* *************************** external strings ************************** */
 
 extern char *logicErr, *reference, *labelRefMsg, *groupLabel, *textMsg,
-       *stackMsg, *labelMsg, *endOfChart, *afterPass, *instrMsg, *endOfPass,
-       *unknown, *anonymous, *illegalAppendErr, *bufferOverflowErr, *badOffsetErr,
-       *illegalConcatErr, *tooManyLabelsErr, *unopenedFORErr, *unclosedROFErr,
-       *bad88FormatErr, *noInstErr, *tokenErr, *undefinedSymErr, *expectNumberErr,
-       *syntaxErr, *tooManyInstrErr, *missingErr, *recursiveErr, *badExprErr,
-       *missingAssertErr, *concatErr, *ignoreENDErr, *invalidAssertErr,
-       *tooMuchStuffErr, *extraTokenErr, *improperPlaceErr, *invalid88Err,
-       *incompleteOpErr, *redefinitionErr, *undefinedLabelErr, *discardLabelErr,
-       *assertionFailErr, *tooManyMsgErr, *fileOpenErr, *fileReadErr, *notEnoughMemErr,
-       *warning, *error, *inLine, *opcodeMsg, *modifierMsg, *aTerm, *bTerm,
-       *currentAssertMsg, *currentFORMsg, *CURLINEErr, *paramCheckMsg,
-       *errNumMsg, *warNumMsg, *duplicateMsg, *divZeroErr, *overflowErr;
+    *stackMsg, *labelMsg, *endOfChart, *afterPass, *instrMsg, *endOfPass,
+    *unknown, *anonymous, *illegalAppendErr, *bufferOverflowErr, *badOffsetErr,
+    *illegalConcatErr, *tooManyLabelsErr, *unopenedFORErr, *unclosedROFErr,
+    *bad88FormatErr, *noInstErr, *tokenErr, *undefinedSymErr, *expectNumberErr,
+    *syntaxErr, *tooManyInstrErr, *missingErr, *recursiveErr, *badExprErr,
+    *missingAssertErr, *concatErr, *ignoreENDErr, *invalidAssertErr,
+    *tooMuchStuffErr, *extraTokenErr, *improperPlaceErr, *invalid88Err,
+    *incompleteOpErr, *redefinitionErr, *undefinedLabelErr, *discardLabelErr,
+    *assertionFailErr, *tooManyMsgErr, *fileOpenErr, *fileReadErr,
+    *notEnoughMemErr, *warning, *error, *inLine, *opcodeMsg, *modifierMsg,
+    *aTerm, *bTerm, *currentAssertMsg, *currentFORMsg, *CURLINEErr,
+    *paramCheckMsg, *errNumMsg, *warNumMsg, *duplicateMsg, *divZeroErr,
+    *overflowErr;
 
-#ifdef VMS                        /* VMS LSE strings ( "-D" option) */
+#ifdef VMS /* VMS LSE strings ( "-D" option) */
 extern char *StartDia, *Region, *AllLine, *LineQualifier, *Label, *LSEWarn,
-       *LSEErr, *Message, *EndDia, *StartMod, *Opening, *EndMod;
-#endif                                /* VMS */
+    *LSEErr, *Message, *EndDia, *StartMod, *Opening, *EndMod;
+#endif /* VMS */
 
 /* ********************** macros + type definitions ********************** */
 
-#define LOGICERROR do { fprintf(STDOUT, logicErr, __FILE__, __LINE__); \
-                        Exit(PARSEERR); } while(0)
+#define LOGICERROR                                                             \
+  do {                                                                         \
+    fprintf(STDOUT, logicErr, __FILE__, __LINE__);                             \
+    Exit(PARSEERR);                                                            \
+  } while (0)
 
-#define MEMORYERROR errprn(MLCERR, (line_st *) NULL, "")
+#define MEMORYERROR errprn(MLCERR, (line_st *)NULL, "")
 
-typedef enum RType {
-  RTEXT, RSTACK, RLABEL
-}       RType;
+typedef enum RType { RTEXT, RSTACK, RLABEL } RType;
 
 typedef enum errType {
-  BUFERR, M88ERR, TOKERR, SYNERR, SNFERR, F88ERR, NOPERR,
-  EVLERR, EXPERR, RECERR, ANNERR, LINERR, APPERR, IGNORE,
-  ZLNERR, NUMERR, IDNERR, ROFERR, FORERR, ERVERR, GRPERR,
-  CHKERR, NASERR, BASERR, EXXERR, FNFERR, UDFERR, CATERR,
-  DLBERR, OFSERR, DOEERR, DSKERR, MLCERR, DIVERR, OFLERR,
+  BUFERR,
+  M88ERR,
+  TOKERR,
+  SYNERR,
+  SNFERR,
+  F88ERR,
+  NOPERR,
+  EVLERR,
+  EXPERR,
+  RECERR,
+  ANNERR,
+  LINERR,
+  APPERR,
+  IGNORE,
+  ZLNERR,
+  NUMERR,
+  IDNERR,
+  ROFERR,
+  FORERR,
+  ERVERR,
+  GRPERR,
+  CHKERR,
+  NASERR,
+  BASERR,
+  EXXERR,
+  FNFERR,
+  UDFERR,
+  CATERR,
+  DLBERR,
+  OFSERR,
+  DOEERR,
+  DSKERR,
+  MLCERR,
+  DIVERR,
+  OFLERR,
   MISC
-}       errType;
+} errType;
 
 typedef enum stateCol {
-  S_OP, S_MOD_ADDR_EXP, S_MODF, S_ADDR_EXP_A,
-  S_EXP_FS, S_ADDR_EXP_B, S_EXPR
-}       stateCol;
+  S_OP,
+  S_MOD_ADDR_EXP,
+  S_MODF,
+  S_ADDR_EXP_A,
+  S_EXP_FS,
+  S_ADDR_EXP_B,
+  S_EXPR
+} stateCol;
 
 typedef struct src_st {
-  char   *src;
-  uShrt   loc;
+  char *src;
+  uShrt loc;
   struct src_st *nextsrc;
-}       src_st;
+} src_st;
 
 typedef struct line_st {
-  char   *vline;
+  char *vline;
   FIELD_T dbginfo;
   src_st *linesrc;
   struct line_st *nextline;
-}       line_st;
+} line_st;
 
 typedef struct grp_st {
-  char   *symn;
+  char *symn;
   struct grp_st *nextsym;
-}       grp_st;
+} grp_st;
 
 typedef struct ref_st {
   grp_st *grpsym;
   line_st *sline;
-  uShrt   value, visit;
-  RType   reftype;
+  uShrt value, visit;
+  RType reftype;
   struct ref_st *nextref;
-}       ref_st;
+} ref_st;
 
 typedef struct err_st {
-  uShrt   code, loc, num;
-}       err_st;
+  uShrt code, loc, num;
+} err_st;
 /* ************************* some globals *************************** */
 
 #ifdef NEW_MODES
-char    addr_sym[] = {'#', '$', '@', '<', '>', '*', '{', '}', '\0'};
-char    expr_sym[] =
-{'(', ')', '/', '+', '-', '%', '!', '=', '\0'};
+char addr_sym[] = {'#', '$', '@', '<', '>', '*', '{', '}', '\0'};
+char expr_sym[] = {'(', ')', '/', '+', '-', '%', '!', '=', '\0'};
 #else
-char    addr_sym[] = {'#', '$', '@', '<', '>', '\0'};
-char    expr_sym[] =
-{'(', ')', '*', '/', '+', '-', '%', '!', '=', '\0'};
+char addr_sym[] = {'#', '$', '@', '<', '>', '\0'};
+char expr_sym[] = {'(', ')', '*', '/', '+', '-', '%', '!', '=', '\0'};
 #endif
 
-char   *opname[] =
-{"MOV", "ADD", "SUB", "MUL", "DIV", "MOD", "JMZ",        /* op */
-  "JMN", "DJN", "CMP", "SLT", "SPL", "DAT", "JMP",        /* op */
+char *opname[] = {"MOV", "ADD", "SUB", "MUL", "DIV", "MOD", "JMZ", /* op */
+                  "JMN", "DJN", "CMP", "SLT", "SPL", "DAT", "JMP", /* op */
 #ifdef NEW_OPCODES
-  "SEQ", "SNE", "NOP",                /* ext op */
+                  "SEQ", "SNE", "NOP", /* ext op */
 #endif
 #ifdef PSPACE
-  "LDP", "STP",
+                  "LDP", "STP",
 #endif
-  "ORG", "END",                        /* pseudo-opcodes */
+                  "SLP", "ZAP", /* energy system opcodes */
+                  "ORG", "END", /* pseudo-opcodes */
 #ifdef SHARED_PSPACE
-"PIN", ""};
+                  "PIN", ""};
 #else
-""};
+                  ""};
 #endif
 
-char   *modname[] = {"A", "B", "AB", "BA", "F", "X", "I", ""};
+char *modname[] = {"A", "B", "AB", "BA", "F", "X", "I", ""};
 #ifndef SERVER
-char   *swname[] = {"DEBUG", "TRACE", "BREAK", "ASSERT", ""};
+char *swname[] = {"DEBUG", "TRACE", "BREAK", "ASSERT", ""};
 #else
-char   *swname[] = {"ASSERT", ""};
+char *swname[] = {"ASSERT", ""};
 #endif
 
 #ifdef SHARED_PSPACE
-#define PSEOPNUM 4                /* also PIN */
+#define PSEOPNUM 4 /* also PIN */
 #else
 #define PSEOPNUM 3
-#endif                                /* SHARED_PSPACE */
+#endif /* SHARED_PSPACE */
 
-#define OPNUM (sizeof(opname)/sizeof(opname[0])) - PSEOPNUM
+#define OPNUM (sizeof(opname) / sizeof(opname[0])) - PSEOPNUM
 
 #define ORGOP (OPNUM + 0)
 #define ENDOP (OPNUM + 1)
 #define PINOP (OPNUM + 2)
-#define EQUOP (OPNUM + 3)        /* this has to be the last */
+#define EQUOP (OPNUM + 3) /* this has to be the last */
 
-#define MODNUM ((sizeof(modname)/sizeof(modname[0])) - 1)
-#define SWNUM  ((sizeof(swname)/sizeof(swname[0])) - 1)
+#define MODNUM ((sizeof(modname) / sizeof(modname[0])) - 1)
+#define SWNUM ((sizeof(swname) / sizeof(swname[0])) - 1)
 
-#define ERRMAX   9                /* max error */
-#define GRPMAX   7                /* max group */
-#define LEXCMAX  50                /* max number of excess lines */
+#define ERRMAX 9   /* max error */
+#define GRPMAX 7   /* max group */
+#define LEXCMAX 50 /* max number of excess lines */
 
 static char noassert;
-static uChar errnum, warnum;        /* Number of error and warning */
+static uChar errnum, warnum; /* Number of error and warning */
 static uChar symnum;
 
 static ref_st *reftbl;
@@ -202,9 +238,8 @@ static int ierr;
 static char buf[MAXALLCHAR], buf2[MAXALLCHAR];
 static char token[MAXALLCHAR], outs[MAXALLCHAR];
 
-
 #ifdef VMS
-FILE   *dias;
+FILE *dias;
 #endif
 
 /* ****************** required local prototypes ********************* */
@@ -262,16 +297,14 @@ static void automaton(), dfashell(), expand(), encode();
 
 /* ************************** Functions ***************************** */
 
-static ref_st *
-lookup(symn)
-  char   *symn;
+static ref_st *lookup(symn)
+char *symn;
 {
   ref_st *curtbl;
   grp_st *symtable;
 
   for (curtbl = reftbl; curtbl; curtbl = curtbl->nextref)
-    for (symtable = curtbl->grpsym; symtable;
-         symtable = symtable->nextsym)
+    for (symtable = curtbl->grpsym; symtable; symtable = symtable->nextsym)
       if (!strcmp(symtable->symn, symn))
         return curtbl;
 
@@ -280,14 +313,12 @@ lookup(symn)
 
 /* ******************************************************************* */
 
-static void
-newtbl()
-{
+static void newtbl() {
   ref_st *curtbl;
-  if ((curtbl = (ref_st *) MALLOC(sizeof(ref_st))) != NULL) {
+  if ((curtbl = (ref_st *)MALLOC(sizeof(ref_st))) != NULL) {
     curtbl->grpsym = NULL;
     curtbl->sline = NULL;
-    curtbl->visit = FALSE;        /* needed to detect recursive reference */
+    curtbl->visit = FALSE; /* needed to detect recursive reference */
     curtbl->nextref = reftbl;
     reftbl = curtbl;
   } else
@@ -296,14 +327,13 @@ newtbl()
 
 /* ******************************************************************* */
 
-static grp_st *
-addsym(symn, curgroup)
-  char   *symn;
-  grp_st *curgroup;
+static grp_st *addsym(symn, curgroup)
+char *symn;
+grp_st *curgroup;
 {
   grp_st *symgrp;
 
-  if ((symgrp = (grp_st *) MALLOC(sizeof(grp_st))) != NULL)
+  if ((symgrp = (grp_st *)MALLOC(sizeof(grp_st))) != NULL)
     if ((symgrp->symn = pstrdup(symn)) != NULL)
       symgrp->nextsym = curgroup;
     else {
@@ -316,20 +346,18 @@ addsym(symn, curgroup)
 
 /* ******************************************************************* */
 
-static void
-addpredef(symn, value)
-  char   *symn;
-  U32_T   value;
+static void addpredef(symn, value) char *symn;
+U32_T value;
 {
   grp_st *lsymtbl = NULL;
   line_st *aline;
 
   lsymtbl = addsym(symn, lsymtbl);
-  sprintf(token, "%lu", (unsigned long) value);
+  sprintf(token, "%lu", (unsigned long)value);
   newtbl();
   reftbl->grpsym = lsymtbl;
   reftbl->reftype = RTEXT;
-  if (((aline = (line_st *) MALLOC(sizeof(line_st))) != NULL) &&
+  if (((aline = (line_st *)MALLOC(sizeof(line_st))) != NULL) &&
       ((aline->vline = pstrdup(token)) != NULL)) {
     aline->nextline = NULL;
     reftbl->sline = aline;
@@ -339,24 +367,22 @@ addpredef(symn, value)
 
 /* ******************************************************************* */
 
-static void
-addpredefs()
-{
+static void addpredefs() {
   /* predefined constants */
-  addpredef("CORESIZE", (U32_T) coreSize);
-  addpredef("MAXPROCESSES", (U32_T) taskNum);
-  addpredef("MAXCYCLES", (U32_T) cycles);
-  addpredef("MAXLENGTH", (U32_T) instrLim);
-  addpredef("MINDISTANCE", (U32_T) separation);
-  addpredef("VERSION", (U32_T) PMARSVER);
-  addpredef("WARRIORS", (U32_T) warriors);
-  addpredef("ROUNDS", (U32_T) rounds);
+  addpredef("CORESIZE", (U32_T)coreSize);
+  addpredef("MAXPROCESSES", (U32_T)taskNum);
+  addpredef("MAXCYCLES", (U32_T)cycles);
+  addpredef("MAXLENGTH", (U32_T)instrLim);
+  addpredef("MINDISTANCE", (U32_T)separation);
+  addpredef("VERSION", (U32_T)PMARSVER);
+  addpredef("WARRIORS", (U32_T)warriors);
+  addpredef("ROUNDS", (U32_T)rounds);
 #ifdef RWLIMIT
-  addpredef("READLIMIT", (U32_T) readLimit);
-  addpredef("WRITELIMIT", (U32_T) writeLimit);
+  addpredef("READLIMIT", (U32_T)readLimit);
+  addpredef("WRITELIMIT", (U32_T)writeLimit);
 #endif
 #ifdef PSPACE
-  addpredef("PSPACESIZE", (U32_T) pSpaceSize);
+  addpredef("PSPACESIZE", (U32_T)pSpaceSize);
 #endif
 }
 
@@ -364,21 +390,19 @@ addpredefs()
 
 /* Add line, with sline and lline, it is possible to add line to multiple
    group of inst */
-static void
-addline(vline, src, lspnt)
-  char   *vline;
-  src_st *src;
-  uShrt   lspnt;
+static void addline(vline, src, lspnt) char *vline;
+src_st *src;
+uShrt lspnt;
 {
   line_st *temp;
-  if ((temp = (line_st *) MALLOC(sizeof(line_st))) != NULL)
+  if ((temp = (line_st *)MALLOC(sizeof(line_st))) != NULL)
     if ((temp->vline = pstrdup(vline)) != NULL) {
       temp->dbginfo = (dbginfo ? TRUE : FALSE);
       temp->linesrc = src;
       temp->nextline = NULL;
-      if (sline[lspnt])                /* First come first serve */
+      if (sline[lspnt]) /* First come first serve */
         lline[lspnt] = lline[lspnt]->nextline = temp;
-      else                        /* lline init depends on sline */
+      else /* lline init depends on sline */
         sline[lspnt] = lline[lspnt] = temp;
     } else {
       FREE(temp);
@@ -388,14 +412,13 @@ addline(vline, src, lspnt)
 
 /* ******************************************************************* */
 
-static src_st *
-addlinesrc(src, loc)
-  char   *src;
-  uShrt   loc;
+static src_st *addlinesrc(src, loc)
+char *src;
+uShrt loc;
 {
   src_st *alinesrc;
 
-  if ((alinesrc = (src_st *) MALLOC(sizeof(src_st))) == NULL)
+  if ((alinesrc = (src_st *)MALLOC(sizeof(src_st))) == NULL)
     MEMORYERROR;
   else {
     alinesrc->src = pstrdup(src);
@@ -409,9 +432,7 @@ addlinesrc(src, loc)
 
 /* ******************************************************************* */
 
-static void
-disposeline(aline)
-  line_st *aline;
+static void disposeline(aline) line_st *aline;
 {
   line_st *tmp;
 
@@ -424,9 +445,7 @@ disposeline(aline)
 
 /* ******************************************************************* */
 
-static void
-disposegrp(agrp)
-  grp_st *agrp;
+static void disposegrp(agrp) grp_st *agrp;
 {
   grp_st *tmp;
 
@@ -439,9 +458,7 @@ disposegrp(agrp)
 
 /* ******************************************************************* */
 
-static void
-disposetbl(atbl, btbl)
-  ref_st *atbl, *btbl;
+static void disposetbl(atbl, btbl) ref_st *atbl, *btbl;
 {
   ref_st *tmp;
 
@@ -455,9 +472,7 @@ disposetbl(atbl, btbl)
 /* ******************************************************************* */
 
 /* clear all allocated mem */
-static void
-cleanmem()
-{
+static void cleanmem() {
   disposeline(sline[0]);
   disposeline(sline[1]);
   sline[0] = sline[1] = NULL;
@@ -471,9 +486,7 @@ cleanmem()
 /* ******************************************************************* */
 
 /* show symbol informations */
-static void
-show_lbl()
-{
+static void show_lbl() {
   ref_st *aref;
   grp_st *agrp;
   line_st *aline;
@@ -523,9 +536,7 @@ show_lbl()
 /* ******************************************************************* */
 
 /* Show information about the EQU processing */
-static void
-show_info(sspnt)
-  uShrt   sspnt;
+static void show_info(sspnt) uShrt sspnt;
 {
   line_st *aline;
 
@@ -544,9 +555,7 @@ show_info(sspnt)
 /* ******************************************************************* */
 
 /* Remove trailing comment from str */
-static void
-nocmnt(str)
-  char   *str;
+static void nocmnt(str) char *str;
 {
   while (*str && (*str != com_sym))
     str++;
@@ -555,18 +564,17 @@ nocmnt(str)
 
 /* ******************************************************************* */
 
-static int
-globalswitch(str, idx, loc, lspnt)
-  char   *str;
-  uShrt   idx, loc, lspnt;
+static int globalswitch(str, idx, loc, lspnt)
+char *str;
+uShrt idx, loc, lspnt;
 {
-  uChar   i;
-  i = (uChar) idx;
+  uChar i;
+  i = (uChar)idx;
 
   get_token(str, &i, token);
   to_upper(token);
 
-  if (!strcmp(token, "REDCODE") && i == idx + 7)        /* no leading spaces */
+  if (!strcmp(token, "REDCODE") && i == idx + 7) /* no leading spaces */
     return -1;
 
   while (isspace(str[i]))
@@ -577,27 +585,27 @@ globalswitch(str, idx, loc, lspnt)
     if (str[i] == '\0')
       warrior[curWarrior].name = pstrdup(unknown);
     else
-      warrior[curWarrior].name = pstrdup((char *) str + i);
+      warrior[curWarrior].name = pstrdup((char *)str + i);
   } else if (strcmp(token, "AUTHOR") == 0) {
     FREE(warrior[curWarrior].authorName);
     if (str[i] == '\0')
       warrior[curWarrior].authorName = pstrdup(anonymous);
     else
-      warrior[curWarrior].authorName = pstrdup((char *) str + i);
+      warrior[curWarrior].authorName = pstrdup((char *)str + i);
   } else if (strcmp(token, "DATE") == 0) {
     FREE(warrior[curWarrior].date);
     if (str[i] == '\0')
       warrior[curWarrior].date = pstrdup("");
     else
-      warrior[curWarrior].date = pstrdup((char *) str + i);
+      warrior[curWarrior].date = pstrdup((char *)str + i);
   } else if (strcmp(token, "VERSION") == 0) {
     FREE(warrior[curWarrior].version);
     if (str[i] == '\0')
       warrior[curWarrior].version = pstrdup("");
     else
-      warrior[curWarrior].version = pstrdup((char *) str + i);
+      warrior[curWarrior].version = pstrdup((char *)str + i);
   } else if (str_in_set(token, swname) < SWNUM) {
-    nocmnt(str + i);                /* don't remove first comment */
+    nocmnt(str + i); /* don't remove first comment */
     addline(str, addlinesrc(str, loc), lspnt);
   }
   return 0;
@@ -606,14 +614,13 @@ globalswitch(str, idx, loc, lspnt)
 /* ******************************************************************* */
 
 #ifndef SERVER
-static void
-lineswitch(str, idx, aline)        /* line switch */
-  char   *str;
-  uShrt   idx;
-  line_st *aline;
+static void lineswitch(str, idx, aline) /* line switch */
+    char *str;
+uShrt idx;
+line_st *aline;
 {
-  uChar   i;
-  i = (uChar) idx;
+  uChar i;
+  i = (uChar)idx;
   get_token(str, &i, token);
   to_upper(token);
 
@@ -648,9 +655,7 @@ lineswitch(str, idx, aline)        /* line switch */
 /* ******************************************************************* */
 
 /* stst && wangsawm v0.4.0: output for different displays */
-static void
-textout(str)
-  char   *str;
+static void textout(str) char *str;
 {
 #ifdef MACGRAPHX
   macputs(str);
@@ -680,26 +685,24 @@ textout(str)
 #if defined XWINGRAPHX
   else
     xWin_puts(str);
-#else                                /* no display */
+#else  /* no display */
   else
     fprintf(stderr, str);
-#endif                                /* XWINGRAPHX */
-#endif                                /* LINUXGRAPHX */
-#endif                                /* DOSGRXGRAPHX */
-#endif                                /* DOSTXTGRAPHX */
-#endif                                /* DOSALLGRAPHX */
-#endif                                /* MACGRAPHX */
+#endif /* XWINGRAPHX */
+#endif /* LINUXGRAPHX */
+#endif /* DOSGRXGRAPHX */
+#endif /* DOSTXTGRAPHX */
+#endif /* DOSALLGRAPHX */
+#endif /* MACGRAPHX */
 }
 
 /* ******************************************************************* */
 
-static void
-errprn(code, aline, arg)
-  errType code;
-  line_st *aline;
-  char   *arg;
+static void errprn(code, aline, arg) errType code;
+line_st *aline;
+char *arg;
 {
-  char    abuf[MAXALLCHAR];
+  char abuf[MAXALLCHAR];
 
   errorcode = PARSEERR;
   errorlevel = SERIOUS;
@@ -823,7 +826,7 @@ errprn(code, aline, arg)
     sprintf(abuf, fileReadErr, arg);
     break;
   case MLCERR:
-    cleanmem();                        /* refresh memory for fprintf and system */
+    cleanmem(); /* refresh memory for fprintf and system */
 #ifdef __MAC__
     textout(notEnoughMemErr);
 #else
@@ -840,7 +843,7 @@ errprn(code, aline, arg)
 
   if (aline) {
 
-    int     i = 0;
+    int i = 0;
 
     if (aline->linesrc == NULL)
       LOGICERROR;
@@ -853,80 +856,80 @@ errprn(code, aline, arg)
       sprintf(outs, "%s", errorlevel == WARNING ? warning : error);
 #ifndef VMS
       textout(outs);
-#else                                /* if defined(VMS) */
+#else /* if defined(VMS) */
       if (!SWITCH_D)
         textout(outs);
       else {
         fprintf(dias, "%s", StartDia);
         fprintf(dias, "%s %s %s %s %d %s\"%s\"\n", Region,
-                warrior[curWarrior].fileName, AllLine, LineQualifier, aline->
-             linesrc->loc, Label, errorlevel == WARNING ? LSEWarn : LSEErr);
+                warrior[curWarrior].fileName, AllLine, LineQualifier,
+                aline->linesrc->loc, Label,
+                errorlevel == WARNING ? LSEWarn : LSEErr);
       }
 
       if (!SWITCH_D) {
 #endif
-        sprintf(outs, inLine, aline->linesrc->loc, aline->linesrc->src);
-        textout(outs);
-        sprintf(outs, "        %s\n", abuf);
-        textout(outs);
+      sprintf(outs, inLine, aline->linesrc->loc, aline->linesrc->src);
+      textout(outs);
+      sprintf(outs, "        %s\n", abuf);
+      textout(outs);
 #ifdef VMS
-      } else {
-        fprintf(dias, "%s \"%s\"\n", Message, abuf);
-        fprintf(dias, "%s", EndDia);
-      }
-#endif
-      errkeep[ierr].num = 1;
-      errkeep[ierr].loc = aline->linesrc->loc;
-      errkeep[ierr++].code = code;
-    } else
-      errkeep[i].num++;
-  } else {
-    sprintf(outs, "%s:\n",
-            errorlevel == WARNING ? warning : error);
-
-#ifndef VMS
-    textout(outs);
-#else
-    if (!SWITCH_D)
-      textout(outs);
-    else {
-      fprintf(dias, "%s", StartDia);
-      fprintf(dias, "%s %s %s %s\"%s\"\n", Region,
-              warrior[curWarrior].fileName, AllLine, Label,
-              errorlevel == WARNING ? LSEWarn : LSEErr);
-    }
-#endif
-    sprintf(outs, "        %s\n", abuf);
-#ifndef VMS
-    textout(outs);
-#else
-    if (!SWITCH_D)
-      textout(outs);
-    else {
+    } else {
       fprintf(dias, "%s \"%s\"\n", Message, abuf);
       fprintf(dias, "%s", EndDia);
     }
 #endif
-  }
+    errkeep[ierr].num = 1;
+    errkeep[ierr].loc = aline->linesrc->loc;
+    errkeep[ierr++].code = code;
+  } else
+    errkeep[i].num++;
+}
+else {
+  sprintf(outs, "%s:\n", errorlevel == WARNING ? warning : error);
 
-  if (ierr >= ERRMAX) {
-    sprintf(outs, tooManyMsgErr);
 #ifndef VMS
-    textout(outs);
+  textout(outs);
 #else
-    if (!SWITCH_D)
-      textout(outs);
-    else {
-      fprintf(dias, "%s", StartDia);
-      fprintf(dias, "Message \"%s\"\n", Message, outs);
-      fprintf(dias, "%s", EndDia);
-    }
+      if (!SWITCH_D)
+        textout(outs);
+      else {
+        fprintf(dias, "%s", StartDia);
+        fprintf(dias, "%s %s %s %s\"%s\"\n", Region,
+                warrior[curWarrior].fileName, AllLine, Label,
+                errorlevel == WARNING ? LSEWarn : LSEErr);
+      }
+#endif
+  sprintf(outs, "        %s\n", abuf);
+#ifndef VMS
+  textout(outs);
+#else
+      if (!SWITCH_D)
+        textout(outs);
+      else {
+        fprintf(dias, "%s \"%s\"\n", Message, abuf);
+        fprintf(dias, "%s", EndDia);
+      }
+#endif
+}
+
+if (ierr >= ERRMAX) {
+  sprintf(outs, tooManyMsgErr);
+#ifndef VMS
+  textout(outs);
+#else
+      if (!SWITCH_D)
+        textout(outs);
+      else {
+        fprintf(dias, "%s", StartDia);
+        fprintf(dias, "Message \"%s\"\n", Message, outs);
+        fprintf(dias, "%s", EndDia);
+      }
 #endif
 
-    Exit(PARSEERR);
-
-  }
-  strcpy(errmsg, abuf);
+  Exit(PARSEERR);
+}
+strcpy(errmsg, abuf);
 }
 
 /* ******************************************************************* */
@@ -946,14 +949,12 @@ static line_st *aline;
 /* ******************************************************************* */
 
 /* Here is the automaton */
-static void
-automaton(expr, state, cell)
-  char   *expr;
-  stateCol state;
-  mem_struct *cell;
+static void automaton(expr, state, cell) char *expr;
+stateCol state;
+mem_struct *cell;
 {
-  uChar   idx = 0;
-  char   *tmp;
+  uChar idx = 0;
+  char *tmp;
   ref_st *atbl;
 
   switch (laststate = state) {
@@ -963,11 +964,12 @@ automaton(expr, state, cell)
     if (get_token(expr, &idx, token) == CHARTOKEN) {
       to_upper(token);
       if ((opcode = str_in_set(token, opname)) < OPNUM)
-        automaton((char *) expr + idx, S_MOD_ADDR_EXP, cell);
+        automaton((char *)expr + idx, S_MOD_ADDR_EXP, cell);
       else if (opcode < EQUOP)
-        automaton((char *) expr + idx, S_EXPR, cell);
+        automaton((char *)expr + idx, S_EXPR, cell);
       else
-/* This should be toggled as error. No label should appear at this point */
+        /* This should be toggled as error. No label should appear at this point
+         */
         LOGICERROR;
     } else
       errprn(EXPERR, aline, opcodeMsg);
@@ -977,10 +979,10 @@ automaton(expr, state, cell)
     statefine = FALSE;
     switch (get_token(expr, &idx, token)) {
     case MODFTOKEN:
-      automaton((char *) expr + idx, S_MODF, cell);
+      automaton((char *)expr + idx, S_MODF, cell);
       break;
     case ADDRTOKEN:
-      cell->A_mode = (FIELD_T) ch_in_set(*token, addr_sym);
+      cell->A_mode = (FIELD_T)ch_in_set(*token, addr_sym);
 #ifdef NEW_MODES
       if (cell->A_mode > 4) {
         if (SWITCH_8)
@@ -989,7 +991,7 @@ automaton(expr, state, cell)
           cell->A_mode = SYM_TO_INDIR_A(cell->A_mode);
       }
 #endif
-      automaton((char *) expr + idx, S_EXP_FS, cell);
+      automaton((char *)expr + idx, S_EXP_FS, cell);
       break;
     case NUMBTOKEN:
     case EXPRTOKEN:
@@ -1004,17 +1006,17 @@ automaton(expr, state, cell)
             atbl->visit = TRUE;
             automaton(atbl->sline->vline, S_MOD_ADDR_EXP, cell);
             atbl->visit = FALSE;
-            automaton((char *) expr + idx, laststate, cell);
+            automaton((char *)expr + idx, laststate, cell);
           } else
-/* all slines should've been filled */
+            /* all slines should've been filled */
             LOGICERROR;
-        else if ((tmp = (char *) MALLOC(sizeof(char) * vallen)) != NULL) {
-          sprintf(tmp, "%d", (int) atbl->value - line);
+        else if ((tmp = (char *)MALLOC(sizeof(char) * vallen)) != NULL) {
+          sprintf(tmp, "%d", (int)atbl->value - line);
           atbl->visit = TRUE;
           automaton(tmp, S_MOD_ADDR_EXP, cell);
           FREE(tmp);
           atbl->visit = FALSE;
-          automaton((char *) expr + idx, laststate, cell);
+          automaton((char *)expr + idx, laststate, cell);
         } else
           MEMORYERROR;
       else if (!token[1])
@@ -1035,7 +1037,7 @@ automaton(expr, state, cell)
     case CHARTOKEN:
       to_upper(token);
       if ((modifier = str_in_set(token, modname)) < MODNUM)
-        automaton((char *) expr + idx, S_ADDR_EXP_A, cell);
+        automaton((char *)expr + idx, S_ADDR_EXP_A, cell);
       else
         errprn(EXPERR, aline, modifierMsg);
       break;
@@ -1050,7 +1052,7 @@ automaton(expr, state, cell)
     statefine = FALSE;
     switch (get_token(expr, &idx, token)) {
     case ADDRTOKEN:
-      cell->A_mode = (FIELD_T) ch_in_set(*token, addr_sym);
+      cell->A_mode = (FIELD_T)ch_in_set(*token, addr_sym);
 #ifdef NEW_MODES
       if (cell->A_mode > 4) {
         if (SWITCH_8)
@@ -1059,7 +1061,7 @@ automaton(expr, state, cell)
           cell->A_mode = SYM_TO_INDIR_A(cell->A_mode);
       }
 #endif
-      automaton((char *) expr + idx, S_EXP_FS, cell);
+      automaton((char *)expr + idx, S_EXP_FS, cell);
       break;
     case NUMBTOKEN:
     case EXPRTOKEN:
@@ -1074,17 +1076,17 @@ automaton(expr, state, cell)
             atbl->visit = TRUE;
             automaton(atbl->sline->vline, S_ADDR_EXP_A, cell);
             atbl->visit = FALSE;
-            automaton((char *) expr + idx, laststate, cell);
+            automaton((char *)expr + idx, laststate, cell);
           } else
-/* all slines should've been filled */
+            /* all slines should've been filled */
             LOGICERROR;
-        else if ((tmp = (char *) MALLOC(sizeof(char) * vallen)) != NULL) {
-          sprintf(tmp, "%d", (int) atbl->value - line);
+        else if ((tmp = (char *)MALLOC(sizeof(char) * vallen)) != NULL) {
+          sprintf(tmp, "%d", (int)atbl->value - line);
           atbl->visit = TRUE;
           automaton(tmp, S_ADDR_EXP_A, cell);
           FREE(tmp);
           atbl->visit = FALSE;
-          automaton((char *) expr + idx, laststate, cell);
+          automaton((char *)expr + idx, laststate, cell);
         } else
           MEMORYERROR;
       else if (!token[1])
@@ -1102,7 +1104,7 @@ automaton(expr, state, cell)
   case S_EXP_FS:
     switch (get_token(expr, &idx, token)) {
     case FSEPTOKEN:
-      automaton((char *) expr + idx, S_ADDR_EXP_B, cell);
+      automaton((char *)expr + idx, S_ADDR_EXP_B, cell);
       break;
     case ADDRTOKEN:
       if ((token[0] != '>') && (token[0] != '<') && (token[0] != '*'))
@@ -1111,7 +1113,7 @@ automaton(expr, state, cell)
         if (!concat(A_expr, token))
           errprn(BUFERR, aline, "");
         statefine = TRUE;
-        automaton((char *) expr + idx, S_EXP_FS, cell);
+        automaton((char *)expr + idx, S_EXP_FS, cell);
       }
       break;
     case NUMBTOKEN:
@@ -1122,7 +1124,7 @@ automaton(expr, state, cell)
       if (!concat(A_expr, token))
         errprn(BUFERR, aline, "");
       statefine = TRUE;
-      automaton((char *) expr + idx, S_EXP_FS, cell);
+      automaton((char *)expr + idx, S_EXP_FS, cell);
       break;
     case CHARTOKEN:
       if ((atbl = lookup(token)) != NULL)
@@ -1133,23 +1135,23 @@ automaton(expr, state, cell)
             atbl->visit = TRUE;
             automaton(atbl->sline->vline, S_EXP_FS, cell);
             atbl->visit = FALSE;
-            automaton((char *) expr + idx, laststate, cell);
+            automaton((char *)expr + idx, laststate, cell);
           } else
-/* all slines should've been filled */
+            /* all slines should've been filled */
             LOGICERROR;
-        else if ((tmp = (char *) MALLOC(sizeof(char) * vallen)) != NULL) {
-          sprintf(tmp, "%d", (int) atbl->value - line);
+        else if ((tmp = (char *)MALLOC(sizeof(char) * vallen)) != NULL) {
+          sprintf(tmp, "%d", (int)atbl->value - line);
           atbl->visit = TRUE;
           automaton(tmp, S_EXP_FS, cell);
           FREE(tmp);
           atbl->visit = FALSE;
-          automaton((char *) expr + idx, laststate, cell);
+          automaton((char *)expr + idx, laststate, cell);
         } else
           MEMORYERROR;
-      else if (!token[1])        /* check if it's a register. */
+      else if (!token[1]) /* check if it's a register. */
         if (concat(A_expr, token)) {
           statefine = TRUE;
-          automaton((char *) expr + idx, S_EXP_FS, cell);
+          automaton((char *)expr + idx, S_EXP_FS, cell);
         } else
           errprn(BUFERR, aline, "");
       else
@@ -1166,7 +1168,7 @@ automaton(expr, state, cell)
     statefine = FALSE;
     switch (get_token(expr, &idx, token)) {
     case ADDRTOKEN:
-      cell->B_mode = (FIELD_T) ch_in_set(*token, addr_sym);
+      cell->B_mode = (FIELD_T)ch_in_set(*token, addr_sym);
 #ifdef NEW_MODES
       if (cell->B_mode > 4) {
         if (SWITCH_8)
@@ -1175,7 +1177,7 @@ automaton(expr, state, cell)
           cell->B_mode = SYM_TO_INDIR_A(cell->B_mode);
       }
 #endif
-      automaton((char *) expr + idx, S_EXPR, cell);
+      automaton((char *)expr + idx, S_EXPR, cell);
       break;
     case NUMBTOKEN:
     case EXPRTOKEN:
@@ -1190,17 +1192,17 @@ automaton(expr, state, cell)
             atbl->visit = TRUE;
             automaton(atbl->sline->vline, S_ADDR_EXP_B, cell);
             atbl->visit = FALSE;
-            automaton((char *) expr + idx, laststate, cell);
+            automaton((char *)expr + idx, laststate, cell);
           } else
-/* all slines should've been filled */
+            /* all slines should've been filled */
             LOGICERROR;
-        else if ((tmp = (char *) MALLOC(sizeof(char) * vallen)) != NULL) {
-          sprintf(tmp, "%d", (int) atbl->value - line);
+        else if ((tmp = (char *)MALLOC(sizeof(char) * vallen)) != NULL) {
+          sprintf(tmp, "%d", (int)atbl->value - line);
           atbl->visit = TRUE;
           automaton(tmp, S_ADDR_EXP_B, cell);
           FREE(tmp);
           atbl->visit = FALSE;
-          automaton((char *) expr + idx, laststate, cell);
+          automaton((char *)expr + idx, laststate, cell);
         } else
           MEMORYERROR;
       else if (!token[1])
@@ -1224,7 +1226,7 @@ automaton(expr, state, cell)
         if (!concat(B_expr, token))
           errprn(BUFERR, aline, "");
         statefine = TRUE;
-        automaton((char *) expr + idx, S_EXPR, cell);
+        automaton((char *)expr + idx, S_EXPR, cell);
       }
       break;
     case NUMBTOKEN:
@@ -1235,7 +1237,7 @@ automaton(expr, state, cell)
       if (!concat(B_expr, token))
         errprn(BUFERR, aline, "");
       statefine = TRUE;
-      automaton((char *) expr + idx, S_EXPR, cell);
+      automaton((char *)expr + idx, S_EXPR, cell);
       break;
     case CHARTOKEN:
       if ((atbl = lookup(token)) != NULL)
@@ -1246,26 +1248,26 @@ automaton(expr, state, cell)
             atbl->visit = TRUE;
             automaton(atbl->sline->vline, S_EXPR, cell);
             atbl->visit = FALSE;
-            automaton((char *) expr + idx, S_EXPR, cell);
+            automaton((char *)expr + idx, S_EXPR, cell);
           } else
-/* all slines should've been filled */
+            /* all slines should've been filled */
             LOGICERROR;
-        else if ((tmp = (char *) MALLOC(sizeof(char) * vallen)) != NULL) {
+        else if ((tmp = (char *)MALLOC(sizeof(char) * vallen)) != NULL) {
           if (opcode < OPNUM)
-            sprintf(tmp, "%d", (int) atbl->value - line);
+            sprintf(tmp, "%d", (int)atbl->value - line);
           else
-            sprintf(tmp, "%d", (int) atbl->value);
+            sprintf(tmp, "%d", (int)atbl->value);
           atbl->visit = TRUE;
           automaton(tmp, S_EXPR, cell);
           FREE(tmp);
           atbl->visit = FALSE;
-          automaton((char *) expr + idx, S_EXPR, cell);
+          automaton((char *)expr + idx, S_EXPR, cell);
         } else
           MEMORYERROR;
-      else if (!token[1])        /* check for register use */
+      else if (!token[1]) /* check for register use */
         if (concat(B_expr, token)) {
           statefine = TRUE;
-          automaton((char *) expr + idx, S_EXPR, cell);
+          automaton((char *)expr + idx, S_EXPR, cell);
         } else
           errprn(BUFERR, aline, "");
       else
@@ -1282,14 +1284,12 @@ automaton(expr, state, cell)
 
 /* ******************************************************************* */
 
-static void
-dfashell(expr, cell)
-  char   *expr;
-  mem_struct *cell;
+static void dfashell(expr, cell) char *expr;
+mem_struct *cell;
 {
-  cell->A_mode = (FIELD_T) ch_in_set('$', addr_sym);
-  cell->B_mode = (FIELD_T) ch_in_set('$', addr_sym);
-  modifier = MODNUM;                /* marked as not used */
+  cell->A_mode = (FIELD_T)ch_in_set('$', addr_sym);
+  cell->B_mode = (FIELD_T)ch_in_set('$', addr_sym);
+  modifier = MODNUM; /* marked as not used */
   A_expr[0] = B_expr[0] = '\0';
 
   errorcode = SUCCESS;
@@ -1297,44 +1297,45 @@ dfashell(expr, cell)
 
   if (opcode < OPNUM) {
 
-/* This is also represented in a NONE case in automaton function call */
+    /* This is also represented in a NONE case in automaton function call */
     if ((statefine == FALSE) && (errorcode == SUCCESS))
       errprn(SYNERR, aline, opname[opcode]);
 
-    else if (B_expr[0] == '\0')        /* If there's only one argument */
+    else if (B_expr[0] == '\0') /* If there's only one argument */
       switch (opcode) {
-      case DAT:                /* The default in DAT statement is #0 */
+      case DAT: /* The default in DAT statement is #0 */
         cell->B_mode = cell->A_mode;
         strcpy(B_expr, A_expr);
-        cell->A_mode = (FIELD_T) ch_in_set('#', addr_sym);
+        cell->A_mode = (FIELD_T)ch_in_set('#', addr_sym);
         strcpy(A_expr, "0");
         break;
-      case SPL:                /* The default in SPL/JMP statement is $0 */
+      case SPL: /* The default in SPL/JMP statement is $0 */
       case JMP:
+      case SLP: /* SLP takes only one argument (cycles to sleep) */
 #ifdef NEW_OPCODES
       case NOP:
 #endif
-        cell->B_mode = (FIELD_T) ch_in_set('$', addr_sym);
+        cell->B_mode = (FIELD_T)ch_in_set('$', addr_sym);
         strcpy(B_expr, "0");
         break;
       default:
-        errprn(NOPERR, aline, opname[opcode]);        /* opcode < OPNUM */
+        errprn(NOPERR, aline, opname[opcode]); /* opcode < OPNUM */
       }
 
     if (SWITCH_8) {
       switch (opcode) {
       case DAT:
-        if (((cell->A_mode != (FIELD_T) IMMEDIATE) &&
-             (cell->A_mode != (FIELD_T) PREDECR)) ||
-            ((cell->B_mode != (FIELD_T) IMMEDIATE) &&
-             (cell->B_mode != (FIELD_T) PREDECR)))
+        if (((cell->A_mode != (FIELD_T)IMMEDIATE) &&
+             (cell->A_mode != (FIELD_T)PREDECR)) ||
+            ((cell->B_mode != (FIELD_T)IMMEDIATE) &&
+             (cell->B_mode != (FIELD_T)PREDECR)))
           errprn(F88ERR, aline, "DAT [#<] [#<]");
         break;
       case MOV:
       case ADD:
       case SUB:
       case CMP:
-        if (cell->B_mode == (FIELD_T) IMMEDIATE) {
+        if (cell->B_mode == (FIELD_T)IMMEDIATE) {
           sprintf(token, "%s [#$@<] [$@<]", opname[opcode]);
           errprn(F88ERR, aline, token);
         }
@@ -1344,7 +1345,7 @@ dfashell(expr, cell)
       case JMN:
       case DJN:
       case SPL:
-        if (cell->A_mode == (FIELD_T) IMMEDIATE) {
+        if (cell->A_mode == (FIELD_T)IMMEDIATE) {
           sprintf(token, "%s [$@<] [#$@<]", opname[opcode]);
           errprn(F88ERR, aline, token);
         }
@@ -1365,19 +1366,19 @@ dfashell(expr, cell)
       }
 
       if (modifier != MODNUM)
-        errprn(M88ERR, aline, ".");        /* These two should be declared in
-                                         * label */
-      if ((cell->A_mode == (FIELD_T) POSTINC) ||
-          (cell->B_mode == (FIELD_T) POSTINC))
+        errprn(M88ERR, aline, "."); /* These two should be declared in
+                                     * label */
+      if ((cell->A_mode == (FIELD_T)POSTINC) ||
+          (cell->B_mode == (FIELD_T)POSTINC))
         errprn(M88ERR, aline, ">");
     }
-    if (modifier == MODNUM)        /* no modifier, pick default */
+    if (modifier == MODNUM) /* no modifier, pick default */
       switch (opcode) {
       case DAT:
 #ifdef NEW_OPCODES
       case NOP:
 #endif
-        modifier = (FIELD_T) mF;
+        modifier = (FIELD_T)mF;
         break;
       case MOV:
       case CMP:
@@ -1385,79 +1386,76 @@ dfashell(expr, cell)
       case SEQ:
       case SNE:
 #endif
-        if (cell->A_mode == (FIELD_T) IMMEDIATE)
-          modifier = (FIELD_T) mAB;
-        else if (cell->B_mode == (FIELD_T) IMMEDIATE)
-          modifier = (FIELD_T) mB;
+        if (cell->A_mode == (FIELD_T)IMMEDIATE)
+          modifier = (FIELD_T)mAB;
+        else if (cell->B_mode == (FIELD_T)IMMEDIATE)
+          modifier = (FIELD_T)mB;
         else
-          modifier = (FIELD_T) mI;
+          modifier = (FIELD_T)mI;
         break;
       case ADD:
       case SUB:
       case MUL:
       case DIV:
       case MOD:
-        if (cell->A_mode == (FIELD_T) IMMEDIATE)
-          modifier = (FIELD_T) mAB;
-        else if (cell->B_mode == (FIELD_T) IMMEDIATE)
-          modifier = (FIELD_T) mB;
+        if (cell->A_mode == (FIELD_T)IMMEDIATE)
+          modifier = (FIELD_T)mAB;
+        else if (cell->B_mode == (FIELD_T)IMMEDIATE)
+          modifier = (FIELD_T)mB;
         else
-          modifier = (FIELD_T) mF;
+          modifier = (FIELD_T)mF;
         break;
 #ifdef PSPACE
       case LDP:
       case STP:
 #endif
       case SLT:
-        if (cell->A_mode == (FIELD_T) IMMEDIATE)
-          modifier = (FIELD_T) mAB;
+        if (cell->A_mode == (FIELD_T)IMMEDIATE)
+          modifier = (FIELD_T)mAB;
         else
-          modifier = (FIELD_T) mB;
+          modifier = (FIELD_T)mB;
         break;
       default:
-        modifier = (FIELD_T) mB;
+        modifier = (FIELD_T)mB;
       }
-    cell->opcode = (FIELD_T) (opcode << 3) + modifier;
+    cell->opcode = (FIELD_T)(opcode << 3) + modifier;
   }
 }
 
 /* ******************************************************************* */
 
-static int
-normalize(value)
-  long    value;
+static int normalize(value)
+long value;
 {
-  while (value >= (long) coreSize)
-    value -= (long) coreSize;
+  while (value >= (long)coreSize)
+    value -= (long)coreSize;
   while (value < 0)
-    value += (long) coreSize;
-  return ((int) value);
+    value += (long)coreSize;
+  return ((int)value);
 }
 
 /* ******************************************************************* */
 /* assemble into instBank */
 
-static void
-encode(sspnt)
-  uShrt   sspnt;
+static void encode(sspnt) uShrt sspnt;
 {
   int evalerrA, evalerrB;
-  long    resultA, resultB;
+  long resultA, resultB;
   mem_struct *base;
 
   if (line <= MAXINSTR) {
 
-    if (line > (uShrt) instrLim) {
-      sprintf(buf, "%d", (int) line - instrLim);
-      errprn(LINERR, (line_st *) NULL, buf);
+    if (line > (uShrt)instrLim) {
+      sprintf(buf, "%d", (int)line - instrLim);
+      errprn(LINERR, (line_st *)NULL, buf);
     }
     warrior[curWarrior].instLen = line;
 
     if (line)
-      if ((warrior[curWarrior].instBank = base = (mem_struct *)
-           MALLOC((line + 1) * sizeof(mem_struct))) != NULL) {
+      if ((warrior[curWarrior].instBank = base =
+               (mem_struct *)MALLOC((line + 1) * sizeof(mem_struct))) != NULL) {
         for (aline = sline[sspnt], line = 0; aline; aline = aline->nextline) {
-          dfashell(aline->vline, (mem_struct *) base + line);
+          dfashell(aline->vline, (mem_struct *)base + line);
           if (errnum == 0) {
             if (*A_expr == '\0')
               strcpy(A_expr, "0");
@@ -1468,13 +1466,13 @@ encode(sspnt)
 #ifdef SHARED_PSPACE
                 || (opcode == PINOP)
 #endif
-              )
+            )
               if ((evalerrA = eval_expr(B_expr, &resultB)) < OK_EXPR) {
                 if (evalerrA == DIV_ZERO)
                   errprn(DIVERR, aline, "");
                 else
                   errprn(EVLERR, aline, "");
-              } else {                /* by absolute */
+              } else { /* by absolute */
                 if (evalerrA == OVERFLOW)
                   errprn(OFLERR, aline, "");
 
@@ -1485,10 +1483,12 @@ encode(sspnt)
                   warrior[curWarrior].offset = normalize(resultB);
 #ifdef SHARED_PSPACE
                 else if (opcode == PINOP) {
-                  warrior[curWarrior].pSpaceIDNumber = resultB;        /* not an address, no
-                                                                 * need to normalize */
-                  warrior[curWarrior].pSpaceIndex = PIN_APPEARED;        /* to indicate PIN has
-                                                                         * been set */
+                  warrior[curWarrior].pSpaceIDNumber =
+                      resultB; /* not an address, no
+                                * need to normalize */
+                  warrior[curWarrior].pSpaceIndex =
+                      PIN_APPEARED; /* to indicate PIN has
+                                     * been set */
                 }
 #endif
                 else if (resultB)
@@ -1511,22 +1511,22 @@ encode(sspnt)
             } else {
               if (evalerrA == OVERFLOW || evalerrB == OVERFLOW)
                 errprn(OFLERR, aline, "");
-              base[line].A_value = (ADDR_T) normalize(resultA);
-              base[line].B_value = (ADDR_T) normalize(resultB);
-              if ((base[line++].debuginfo = (FIELD_T) aline->dbginfo) != 0)
+              base[line].A_value = (ADDR_T)normalize(resultA);
+              base[line].B_value = (ADDR_T)normalize(resultB);
+              if ((base[line++].debuginfo = (FIELD_T)aline->dbginfo) != 0)
                 debugState = BREAK;
             }
           }
         }
         if ((warrior[curWarrior].offset < 0) ||
             (warrior[curWarrior].offset >= warrior[curWarrior].instLen))
-          errprn(OFSERR, (line_st *) NULL, "");
+          errprn(OFSERR, (line_st *)NULL, "");
       } else
         MEMORYERROR;
     else
-      errprn(ZLNERR, (line_st *) NULL, "");
+      errprn(ZLNERR, (line_st *)NULL, "");
   } else
-    errprn(EXXERR, (line_st *) NULL, "");
+    errprn(EXXERR, (line_st *)NULL, "");
 }
 
 /* ******************************************************************* */
@@ -1542,13 +1542,12 @@ encode(sspnt)
 
 /* ******************************************************************* */
 
-static int
-blkfor(expr, dest)
-  char   *expr, *dest;
+static int blkfor(expr, dest)
+char *expr, *dest;
 {
   int evalerr;
   line_st *cline;
-  long    result;
+  long result;
   ref_st *atbl, *ptbl;
   grp_st *forSymGr;
 
@@ -1592,11 +1591,11 @@ blkfor(expr, dest)
     atbl = reftbl;
 
     cline = aline;
-    for (atbl->value = 1; vcont && atbl->value <= (uShrt) result && aline;
+    for (atbl->value = 1; vcont && atbl->value <= (uShrt)result && aline;
          atbl->value++)
       for (aline = cline; vcont;)
         if (aline->nextline) {
-          int     r;
+          int r;
 
           aline = aline->nextline;
           *dest = '\0';
@@ -1608,7 +1607,7 @@ blkfor(expr, dest)
               dbginfo = 0;
           }
         } else {
-          errprn(ROFERR, (line_st *) NULL, "");
+          errprn(ROFERR, (line_st *)NULL, "");
           vcont = FALSE;
         }
 
@@ -1629,12 +1628,11 @@ blkfor(expr, dest)
 
 /* ******************************************************************* */
 
-static int
-equtbl(expr)
-  char   *expr;
+static int equtbl(expr)
+char *expr;
 {
   line_st *cline, *pline = NULL;
-  uChar   i;
+  uChar i;
 
   if (symtbl) {
 
@@ -1644,7 +1642,7 @@ equtbl(expr)
     symtbl = NULL;
     symnum = 0;
 
-    if (((cline = (line_st *) MALLOC(sizeof(line_st))) != NULL) &&
+    if (((cline = (line_st *)MALLOC(sizeof(line_st))) != NULL) &&
         ((cline->vline = pstrdup(expr)) != NULL)) {
       cline->linesrc = aline->linesrc;
       cline->nextline = NULL;
@@ -1660,8 +1658,8 @@ equtbl(expr)
       if (strcmp(token, "EQU") == 0) {
         aline = aline->nextline;
 
-        if (((cline = (line_st *) MALLOC(sizeof(line_st))) != NULL) &&
-            ((cline->vline = pstrdup((char *) aline->vline + i)) != NULL)) {
+        if (((cline = (line_st *)MALLOC(sizeof(line_st))) != NULL) &&
+            ((cline->vline = pstrdup((char *)aline->vline + i)) != NULL)) {
           cline->linesrc = aline->linesrc;
           cline->nextline = NULL;
           pline = pline->nextline = cline;
@@ -1685,11 +1683,10 @@ equtbl(expr)
 
 /* ******************************************************************* */
 
-static int
-equsub(expr, dest, wdecl, tbl)
-  char   *expr, *dest;
-  int     wdecl;
-  ref_st *tbl;
+static int equsub(expr, dest, wdecl, tbl)
+char *expr, *dest;
+int wdecl;
+ref_st *tbl;
 {
   line_st *cline;
 
@@ -1722,13 +1719,12 @@ equsub(expr, dest, wdecl, tbl)
 
 /* recursively traverse the buffer */
 /* buf[] has to be "" */
-static int
-trav2(buffer, dest, wdecl)
-  char   *buffer, *dest;
-  int     wdecl;
+static int trav2(buffer, dest, wdecl)
+char *buffer, *dest;
+int wdecl;
 {
   int evalerr;
-  uChar   idxp = 0;
+  uChar idxp = 0;
   ref_st *tbl;
 
   switch (get_token(buffer, &idxp, token)) {
@@ -1739,15 +1735,15 @@ trav2(buffer, dest, wdecl)
   case COMMTOKEN:
     if ((wdecl == SNIL) && (statefine == 0)) {
 
-      uChar   idx;
+      uChar idx;
 
       idx = idxp;
       get_token(buffer, &idx, token);
       to_upper(token);
       if (strcmp(token, "ASSERT") == 0) {
-        long    result;
+        long result;
 
-        trav2((char *) buffer + idx, dest, SVAL);
+        trav2((char *)buffer + idx, dest, SVAL);
 
         if (SWITCH_V) {
           sprintf(outs, currentAssertMsg, dest);
@@ -1787,7 +1783,7 @@ trav2(buffer, dest, wdecl)
       if (statefine)
         statefine++;
       else if (wdecl <= SLBL)
-        return blkfor((char *) buffer + idxp, dest);
+        return blkfor((char *)buffer + idxp, dest);
       else
         errprn(APPERR, aline, token);
 
@@ -1799,7 +1795,7 @@ trav2(buffer, dest, wdecl)
         if (isspace(buffer[idxp]))
           concat(buf, " ");
         if (concat(dest, buf))
-          return (trav2((char *) buffer + idxp, dest, wdecl));
+          return (trav2((char *)buffer + idxp, dest, wdecl));
         else
           errprn(BUFERR, aline, "");
       } else
@@ -1809,7 +1805,7 @@ trav2(buffer, dest, wdecl)
       if (statefine)
         return SNIL;
       else if (wdecl <= SLBL)
-        return equtbl((char *) buffer + idxp);
+        return equtbl((char *)buffer + idxp);
       else
         errprn(APPERR, aline, token);
 
@@ -1819,9 +1815,10 @@ trav2(buffer, dest, wdecl)
 
       else if (wdecl <= SLBL) {
 
-        uChar   j, op;
+        uChar j, op;
 
-        for (j = 0; buf[j]; j++);
+        for (j = 0; buf[j]; j++)
+          ;
 
         while (buffer[idxp] && !isspace(buffer[idxp]))
           buf[j++] = buffer[idxp++];
@@ -1835,7 +1832,7 @@ trav2(buffer, dest, wdecl)
 
         else {
           op = opcode;
-          if ((wdecl = trav2((char *) buffer + idxp, dest,
+          if ((wdecl = trav2((char *)buffer + idxp, dest,
                              op < OPNUM ? SVAL : SPSE)) != SERR) {
 
             if (symtbl) {
@@ -1862,12 +1859,12 @@ trav2(buffer, dest, wdecl)
 
     else if (statefine == 0) {
 
-      char    tmp = 1;
+      char tmp = 1;
 
       while ((buffer[idxp] == cat_sym) && (isalpha(buffer[idxp + 1])) &&
              (idxp++, get_token(buffer, &idxp, buf) == CHARTOKEN) && tmp)
         if (((tbl = lookup(buf)) != NULL) && (tbl->reftype == RSTACK)) {
-          sprintf(buf, "%02u", (unsigned int) tbl->value);
+          sprintf(buf, "%02u", (unsigned int)tbl->value);
           if (!concat(token, buf))
             errprn(BUFERR, aline, "");
         } else {
@@ -1880,21 +1877,21 @@ trav2(buffer, dest, wdecl)
           if (tbl->visit)
             errprn(RECERR, aline, token);
           else
-            return equsub((char *) buffer + idxp, dest, wdecl, tbl);
+            return equsub((char *)buffer + idxp, dest, wdecl, tbl);
 
         else if (wdecl > SLBL) {
           if (tbl->reftype == RSTACK)
-            sprintf(buf, "%02u", (unsigned int) tbl->value);
+            sprintf(buf, "%02u", (unsigned int)tbl->value);
           else if (wdecl == SPSE)
-            sprintf(buf, "%d", tbl->value);        /* absolute value */
+            sprintf(buf, "%d", tbl->value); /* absolute value */
           else
-            sprintf(buf, "%d", tbl->value - line);        /* relative value */
+            sprintf(buf, "%d", tbl->value - line); /* relative value */
 
           if (isspace(buffer[idxp]))
             concat(buf, " ");
 
           if (concat(dest, buf))
-            return (trav2((char *) buffer + idxp, dest, wdecl));
+            return (trav2((char *)buffer + idxp, dest, wdecl));
           else
             errprn(BUFERR, aline, "");
         } else
@@ -1907,21 +1904,21 @@ trav2(buffer, dest, wdecl)
         } else
           errprn(GRPERR, aline, token);
 
-        if (buffer[idxp] == cln_sym)        /* ignore a colon after a line-label */
+        if (buffer[idxp] == cln_sym) /* ignore a colon after a line-label */
           idxp++;
 
         /* traverse the rest of buffer */
-        return trav2((char *) buffer + idxp, dest, SLBL);
+        return trav2((char *)buffer + idxp, dest, SLBL);
       } else {
         if (isspace(buffer[idxp]))
           concat(token, " ");
         if (concat(dest, token))
-          return (trav2((char *) buffer + idxp, dest, wdecl));
+          return (trav2((char *)buffer + idxp, dest, wdecl));
         else
           errprn(BUFERR, aline, "");
       }
     } else
-      return trav2((char *) buffer + idxp, dest, SNIL);
+      return trav2((char *)buffer + idxp, dest, SNIL);
     break;
   default:
     if (statefine)
@@ -1930,7 +1927,7 @@ trav2(buffer, dest, wdecl)
       errprn(TOKERR, aline, token);
     else {
       if (concat(dest, token))
-        return trav2((char *) buffer + idxp, dest, wdecl);
+        return trav2((char *)buffer + idxp, dest, wdecl);
       else
         errprn(BUFERR, aline, "");
     }
@@ -1941,9 +1938,7 @@ trav2(buffer, dest, wdecl)
 /* ******************************************************************* */
 
 /* collect and expand equ */
-static void
-expand(sspnt)
-  uShrt   sspnt;
+static void expand(sspnt) uShrt sspnt;
 {
   dspnt = 1 - sspnt;
   disposeline(sline[dspnt]);
@@ -1951,7 +1946,7 @@ expand(sspnt)
 
   vcont = TRUE;
   statefine = 0;
-  linemax = (uShrt) instrLim + LEXCMAX;
+  linemax = (uShrt)instrLim + LEXCMAX;
 
   aline = sline[sspnt];
   while (aline && vcont) {
@@ -1973,18 +1968,17 @@ expand(sspnt)
 
 /* ******************************************************************* */
 
-int
-parse(expr, cell, loc)
-  char   *expr;
-  mem_struct *cell;
-  ADDR_T  loc;
+int parse(expr, cell, loc)
+char *expr;
+mem_struct *cell;
+ADDR_T loc;
 {
   int evalerrA, evalerrB;
-  long    resultA, resultB;
+  long resultA, resultB;
   mem_struct tmp;
-  ADDR_T  dloc;
-  uChar   i = 0;
-  uShrt   sspnt = 0;
+  ADDR_T dloc;
+  uChar i = 0;
+  uShrt sspnt = 0;
 
   errnum = warnum = 0;
   ierr = 0;
@@ -1993,22 +1987,22 @@ parse(expr, cell, loc)
   switch (get_token(expr, &i, token)) {
   case CHARTOKEN:
     nocmnt(expr);
-    addline(expr, addlinesrc(expr, (uShrt) loc), sspnt);
+    addline(expr, addlinesrc(expr, (uShrt)loc), sspnt);
     break;
   case COMMTOKEN:
-    globalswitch(expr, (uShrt) i, (uShrt) loc, sspnt);
+    globalswitch(expr, (uShrt)i, (uShrt)loc, sspnt);
     break;
   default:
     errprn(TOKERR, aline, token);
   }
 
-  line = (uShrt) dloc;
+  line = (uShrt)dloc;
   expand(sspnt);
   disposeline(sline[sspnt]);
   sline[sspnt] = NULL;
   sspnt = 1 - sspnt;
 
-  for (aline = sline[sspnt], line = (uShrt) loc; aline;
+  for (aline = sline[sspnt], line = (uShrt)loc; aline;
        aline = aline->nextline) {
     dfashell(aline->vline, &tmp);
     if (errnum == 0)
@@ -2029,8 +2023,8 @@ parse(expr, cell, loc)
           cell->opcode = tmp.opcode;
           cell->A_mode = tmp.A_mode;
           cell->B_mode = tmp.B_mode;
-          cell->A_value = (ADDR_T) normalize(resultA);
-          cell->B_value = (ADDR_T) normalize(resultB);
+          cell->A_value = (ADDR_T)normalize(resultA);
+          cell->B_value = (ADDR_T)normalize(resultB);
           if ((cell->debuginfo = (dbginfo ? TRUE : FALSE)) != FALSE)
             debugState = BREAK;
           cell++, line++;
@@ -2068,18 +2062,17 @@ parse(expr, cell, loc)
 
 static char stdinstart = 0;
 
-int
-assemble(fName, aWarrior)
-  char   *fName;
-  int     aWarrior;
+int assemble(fName, aWarrior)
+char *fName;
+int aWarrior;
 {
-  FILE   *infp;
-  uChar   cont = TRUE, conLine = FALSE, i;
-  uShrt   lines;                /* logical and physical lines */
-  uShrt   spnt = 0;                /* index/pointer to sline and lline */
+  FILE *infp;
+  uChar cont = TRUE, conLine = FALSE, i;
+  uShrt lines;    /* logical and physical lines */
+  uShrt spnt = 0; /* index/pointer to sline and lline */
 
 #ifdef VMS
-  char    DIAfilename[256], *temp;
+  char DIAfilename[256], *temp;
 #endif
 
 #ifdef ASM_DEBUG
@@ -2102,7 +2095,7 @@ assemble(fName, aWarrior)
   lines = 0;
   ierr = 0;
 
-  if ((errkeep = (err_st *) MALLOC(sizeof(err_st) * ERRMAX)) == NULL)
+  if ((errkeep = (err_st *)MALLOC(sizeof(err_st) * ERRMAX)) == NULL)
     MEMORYERROR;
 
   curWarrior = aWarrior;
@@ -2111,7 +2104,7 @@ assemble(fName, aWarrior)
   warrior[curWarrior].date = pstrdup("");
   warrior[curWarrior].version = pstrdup("");
 #ifdef PSPACE
-  warrior[curWarrior].pSpaceIndex = UNSHARED;        /* tag */
+  warrior[curWarrior].pSpaceIndex = UNSHARED; /* tag */
 #endif
   /* These two inits turn out to be neccessary */
   warrior[curWarrior].instBank = NULL;
@@ -2119,15 +2112,15 @@ assemble(fName, aWarrior)
 
 #ifdef VMS
   if (SWITCH_D) {
-    temp = strstr(warrior[curWarrior].fileName, "]");        /* Look for dir spec */
+    temp = strstr(warrior[curWarrior].fileName, "]"); /* Look for dir spec */
     if (temp == NULL) {
       temp = strstr(warrior[curWarrior].fileName, ":");
       if (temp == NULL)
         temp = warrior[curWarrior].fileName;
       else
-        temp++;                        /* Bypass ":" */
+        temp++; /* Bypass ":" */
     } else
-      temp++;                        /* bypass "]" */
+      temp++; /* bypass "]" */
     strcpy(DIAfilename, temp);
     temp = strstr(DIAfilename, ".");
     if (temp == NULL)
@@ -2152,7 +2145,7 @@ assemble(fName, aWarrior)
 
   if ((*fName == '\0') || (infp = fopen(fName, "r")) != NULL) {
 
-    char    pstart;
+    char pstart;
 
     if (*fName == '\0') {
       infp = stdin;
@@ -2170,23 +2163,25 @@ assemble(fName, aWarrior)
        * excluded. Need to be non-strict boolean evaluation
        */
       *buf = '\0';
-      i = 0;                        /* pointer to line buffer start */
+      i = 0; /* pointer to line buffer start */
       int commentfound = FALSE;
       do {
         if (fgets(buf + i, MAXALLCHAR - i, infp)) {
           for (; buf[i]; i++) {
-            if (buf[i] == ';') commentfound = TRUE;
+            if (buf[i] == ';')
+              commentfound = TRUE;
             if (buf[i] == '\n' || buf[i] == '\r')
               break;
-            }
+          }
           buf[i] = 0;
-          if (buf[i - 1] == '\\' && commentfound == FALSE) {        /* line continued */
+          if (buf[i - 1] == '\\' &&
+              commentfound == FALSE) { /* line continued */
             conLine = TRUE;
-            buf[--i] = 0;        /* reset */
+            buf[--i] = 0; /* reset */
           } else
             conLine = FALSE;
         } else if (ferror(infp)) {
-          errprn(DSKERR, (line_st *) NULL, fName);
+          errprn(DSKERR, (line_st *)NULL, fName);
           fclose(infp);
           return PARSEERR;
         } else
@@ -2202,7 +2197,7 @@ assemble(fName, aWarrior)
          * sline
          */
       case COMMTOKEN:
-        if (globalswitch(buf, (uShrt) i, lines, spnt))        /* REDCODE? */
+        if (globalswitch(buf, (uShrt)i, lines, spnt)) /* REDCODE? */
           switch (pstart) {
           case 0:
             disposeline(sline[spnt]);
@@ -2217,8 +2212,8 @@ assemble(fName, aWarrior)
             break;
           }
         break;
-#if 0                                /* no longer scanning for END, ;redcode req'd
-                                 * between warriors in stdin */
+#if 0 /* no longer scanning for END, ;redcode req'd                            \
+       * between warriors in stdin */
       case CHARTOKEN:
         nocmnt(buf);
         do {
@@ -2234,7 +2229,7 @@ assemble(fName, aWarrior)
       case NONE:
         break;
       default:
-        nocmnt(buf);                /* saving some space */
+        nocmnt(buf); /* saving some space */
         addline(buf, addlinesrc(buf, lines), spnt);
         break;
       }
@@ -2246,7 +2241,7 @@ assemble(fName, aWarrior)
     if (*fName)
       fclose(infp);
     else
-      stdinstart = pstart;        /* save value for next stdin reference */
+      stdinstart = pstart; /* save value for next stdin reference */
 
     if (SWITCH_V) {
       show_info(spnt);
@@ -2271,8 +2266,8 @@ assemble(fName, aWarrior)
           break;
       }
 
-      errprn(DLBERR, (line_st *) NULL, buf);
-      disposegrp(symtbl);        /* discount any symtbl with empty reference */
+      errprn(DLBERR, (line_st *)NULL, buf);
+      disposegrp(symtbl); /* discount any symtbl with empty reference */
       symtbl = NULL;
       symnum = 0;
     }
@@ -2280,7 +2275,7 @@ assemble(fName, aWarrior)
     pass++;
 
     if (noassert)
-      errprn(NASERR, (line_st *) NULL, "");
+      errprn(NASERR, (line_st *)NULL, "");
 
     if (SWITCH_V) {
       textout("\n");
@@ -2320,7 +2315,8 @@ assemble(fName, aWarrior)
 #ifndef SERVER
     if (errnum + warnum) {
       if (*warrior[curWarrior].fileName)
-        sprintf(outs, "\nSource: filename '%s'\n", warrior[curWarrior].fileName);
+        sprintf(outs, "\nSource: filename '%s'\n",
+                warrior[curWarrior].fileName);
       else
         sprintf(outs, "\nSource: standard input (%s by %s)\n",
                 warrior[curWarrior].name, warrior[curWarrior].authorName);
@@ -2345,7 +2341,7 @@ assemble(fName, aWarrior)
       textout(outs);
     }
   } else
-    errprn(FNFERR, (line_st *) NULL, fName);
+    errprn(FNFERR, (line_st *)NULL, fName);
 
   if (errnum)
     errorcode = PARSEERR;

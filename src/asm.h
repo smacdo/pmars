@@ -1,5 +1,6 @@
 /* pMARS -- a portable Memory Array Redcode Simulator
- * Copyright (C) 1993-1996 Albert Ma, Na'ndor Sieben, Stefan Strack and Mintardjo Wangsawidjaja
+ * Copyright (C) 1993-1996 Albert Ma, Na'ndor Sieben, Stefan Strack and
+ * Mintardjo Wangsawidjaja
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +22,9 @@
  * $Id: asm.h,v 1.1.1.1 2000/08/20 13:29:27 iltzu Exp $
  */
 
-#define NONE      0
+#include "global.h"
+
+#define NONE 0
 #define ADDRTOKEN 1
 #define FSEPTOKEN 2
 #define COMMTOKEN 3
@@ -31,7 +34,7 @@
 #define CHARTOKEN 7
 #define NUMBTOKEN 8
 #define APNDTOKEN 9
-#define MISCTOKEN 10                /* unrecognized token */
+#define MISCTOKEN 10 /* unrecognized token */
 
 #define sep_sym ','
 #define com_sym ';'
@@ -49,7 +52,8 @@ extern uChar str_in_set(char *, char *s[]);
 extern int get_token(char *, uChar *, char *);
 extern void to_upper(char *);
 #else
-extern char *pstrdup(), *pstrcat(), *pstrchr();;
+extern char *pstrdup(), *pstrcat(), *pstrchr();
+;
 extern uChar ch_in_set(), skip_space();
 extern uChar str_in_set();
 extern int get_token();
