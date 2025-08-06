@@ -1,0 +1,1010 @@
+{
+  "simulation_info": {
+    "core_size": 8000,
+    "warriors": 2,
+    "max_cycles": 500,
+    "rounds": 1
+  },
+  "warriors_info": [
+    {
+      "id": 0,
+      "name": "phoenix",
+      "author": "Generated",
+      "position": 0,
+      "length": 50
+    },
+    {
+      "id": 1,
+      "name": "viper",
+      "author": "Generated",
+      "position": 4000,
+      "length": 50
+    }
+  ],
+  "execution_steps": [
+    {
+      "step": 0,
+      "round": 1,
+      "cycle": 500,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 0,
+        "name": "phoenix",
+        "pc": 0,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 0,
+        "opcode": "MOV",
+        "modifier": "I",
+        "a_mode": "IMMEDIATE",
+        "a_value": 0,
+        "b_mode": "DIRECT",
+        "b_value": 1
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 7998,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": -1
+        },
+        {
+          "address": 7999,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": -1
+        },
+        {
+          "address": 0,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": 0
+        },
+        {
+          "address": 1,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": 0
+        },
+        {
+          "address": 2,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": 0
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "round": 1,
+      "cycle": 499,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 1,
+        "name": "viper",
+        "pc": 4000,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 4000,
+        "opcode": "ADD",
+        "modifier": "I",
+        "a_mode": "IMMEDIATE",
+        "a_value": 1,
+        "b_mode": "DIRECT",
+        "b_value": -1
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 3998,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": -1
+        },
+        {
+          "address": 3999,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": -1
+        },
+        {
+          "address": 4000,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": 1
+        },
+        {
+          "address": 4001,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": 1
+        },
+        {
+          "address": 4002,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "round": 1,
+      "cycle": 498,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 0,
+        "name": "phoenix",
+        "pc": 1,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 1,
+        "opcode": "JMP",
+        "modifier": "I",
+        "a_mode": "DIRECT",
+        "a_value": -2,
+        "b_mode": "DIRECT",
+        "b_value": 0
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 7999,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -2,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 0,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -2,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 1,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -2,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 2,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -2,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 3,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -2,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "round": 1,
+      "cycle": 497,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 1,
+        "name": "viper",
+        "pc": 4001,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 4001,
+        "opcode": "DAT",
+        "modifier": "I",
+        "a_mode": "IMMEDIATE",
+        "a_value": 0,
+        "b_mode": "IMMEDIATE",
+        "b_value": 0
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 3999,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 4000,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 4001,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": 1
+        },
+        {
+          "address": 4002,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": 1
+        },
+        {
+          "address": 4003,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "round": 1,
+      "cycle": 496,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 0,
+        "name": "phoenix",
+        "pc": 2,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 2,
+        "opcode": "SPL",
+        "modifier": "I",
+        "a_mode": "DIRECT",
+        "a_value": 1,
+        "b_mode": "DIRECT",
+        "b_value": 0
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 0,
+          "opcode": "SPL",
+          "a_mode": "DIRECT",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 1,
+          "opcode": "SPL",
+          "a_mode": "DIRECT",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 2,
+          "opcode": "SPL",
+          "a_mode": "DIRECT",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 3,
+          "opcode": "SPL",
+          "a_mode": "DIRECT",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 4,
+          "opcode": "SPL",
+          "a_mode": "DIRECT",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "round": 1,
+      "cycle": 495,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 1,
+        "name": "viper",
+        "pc": 4002,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 4002,
+        "opcode": "MOV",
+        "modifier": "I",
+        "a_mode": "IMMEDIATE",
+        "a_value": 0,
+        "b_mode": "DIRECT",
+        "b_value": 1
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 4000,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": -1
+        },
+        {
+          "address": 4001,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": -1
+        },
+        {
+          "address": 4002,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": 1
+        },
+        {
+          "address": 4003,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": 1
+        },
+        {
+          "address": 4004,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "round": 1,
+      "cycle": 494,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 0,
+        "name": "phoenix",
+        "pc": 3,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 3,
+        "opcode": "ADD",
+        "modifier": "I",
+        "a_mode": "IMMEDIATE",
+        "a_value": 1,
+        "b_mode": "DIRECT",
+        "b_value": -1
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 1,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": -1
+        },
+        {
+          "address": 2,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": -1
+        },
+        {
+          "address": 3,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": 0
+        },
+        {
+          "address": 4,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": 0
+        },
+        {
+          "address": 5,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": 0
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "round": 1,
+      "cycle": 493,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 1,
+        "name": "viper",
+        "pc": 4003,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 4003,
+        "opcode": "JMP",
+        "modifier": "I",
+        "a_mode": "DIRECT",
+        "a_value": -2,
+        "b_mode": "DIRECT",
+        "b_value": 0
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 4001,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -2,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 4002,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -2,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 4003,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -2,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 1
+        },
+        {
+          "address": 4004,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -2,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 1
+        },
+        {
+          "address": 4005,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -2,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "round": 1,
+      "cycle": 492,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 0,
+        "name": "phoenix",
+        "pc": 4,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 4,
+        "opcode": "DAT",
+        "modifier": "I",
+        "a_mode": "IMMEDIATE",
+        "a_value": 0,
+        "b_mode": "IMMEDIATE",
+        "b_value": 0
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 2,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 3,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 4,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 5,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 6,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": 0
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "round": 1,
+      "cycle": 491,
+      "warriors_left": 1,
+      "current_warrior": {
+        "id": 1,
+        "name": "viper",
+        "pc": 4004,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 4004,
+        "opcode": "SPL",
+        "modifier": "I",
+        "a_mode": "DIRECT",
+        "a_value": 1,
+        "b_mode": "DIRECT",
+        "b_value": 0
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 0,
+          "position": 0,
+          "alive": false
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 4002,
+          "opcode": "SPL",
+          "a_mode": "DIRECT",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 4003,
+          "opcode": "SPL",
+          "a_mode": "DIRECT",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 4004,
+          "opcode": "SPL",
+          "a_mode": "DIRECT",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 1
+        },
+        {
+          "address": 4005,
+          "opcode": "SPL",
+          "a_mode": "DIRECT",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 1
+        },
+        {
+          "address": 4006,
+          "opcode": "SPL",
+          "a_mode": "DIRECT",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "round": 1,
+      "cycle": 489,
+      "warriors_left": 1,
+      "current_warrior": {
+        "id": 1,
+        "name": "viper",
+        "pc": 4005,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 4005,
+        "opcode": "ADD",
+        "modifier": "I",
+        "a_mode": "IMMEDIATE",
+        "a_value": 1,
+        "b_mode": "DIRECT",
+        "b_value": -1
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 0,
+          "position": 0,
+          "alive": false
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 4003,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": -1
+        },
+        {
+          "address": 4004,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": -1
+        },
+        {
+          "address": 4005,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": 1
+        },
+        {
+          "address": 4006,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": 1
+        },
+        {
+          "address": 4007,
+          "opcode": "ADD",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "DIRECT",
+          "b_value": -1,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "round": 1,
+      "cycle": 487,
+      "warriors_left": 1,
+      "current_warrior": {
+        "id": 1,
+        "name": "viper",
+        "pc": 4006,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 4006,
+        "opcode": "DAT",
+        "modifier": "I",
+        "a_mode": "IMMEDIATE",
+        "a_value": 0,
+        "b_mode": "IMMEDIATE",
+        "b_value": 0
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 0,
+          "position": 0,
+          "alive": false
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 4004,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 4005,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 4006,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": 1
+        },
+        {
+          "address": 4007,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": 1
+        },
+        {
+          "address": 4008,
+          "opcode": "DAT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": 1
+        }
+      ]
+    }
+  ]
+}

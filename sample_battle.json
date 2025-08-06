@@ -1,0 +1,350 @@
+{
+  "simulation_info": {
+    "core_size": 8000,
+    "warriors": 2,
+    "max_cycles": 80000,
+    "rounds": 1
+  },
+  "warriors_info": [
+    {
+      "id": 0,
+      "name": "Aeka",
+      "author": "Unknown",
+      "position": 0,
+      "length": 7
+    },
+    {
+      "id": 1,
+      "name": "Flashpaper",
+      "author": "Unknown",
+      "position": 4000,
+      "length": 5
+    }
+  ],
+  "execution_steps": [
+    {
+      "step": 0,
+      "round": 1,
+      "cycle": 159998,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 0,
+        "name": "Aeka",
+        "pc": 2,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 2,
+        "opcode": "MOV",
+        "a_mode": "IMMEDIATE",
+        "a_value": 0,
+        "b_mode": "DIRECT",
+        "b_value": 1
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 0,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 1,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": 0
+        },
+        {
+          "address": 2,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 4000,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "INDIRECT",
+          "b_value": 1,
+          "owner": 1
+        },
+        {
+          "address": 4001,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "round": 1,
+      "cycle": 159997,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 1,
+        "name": "Flashpaper",
+        "pc": 4000,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 4000,
+        "opcode": "MOV",
+        "a_mode": "IMMEDIATE",
+        "a_value": 1,
+        "b_mode": "INDIRECT",
+        "b_value": 1
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 0,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 1,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": 0
+        },
+        {
+          "address": 2,
+          "opcode": "JMP",
+          "a_mode": "DIRECT",
+          "a_value": -1,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 4000,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "INDIRECT",
+          "b_value": 1,
+          "owner": 1
+        },
+        {
+          "address": 4001,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 2,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "round": 1,
+      "cycle": 159996,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 0,
+        "name": "Aeka",
+        "pc": 1,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 1,
+        "opcode": "MOV",
+        "a_mode": "IMMEDIATE",
+        "a_value": 0,
+        "b_mode": "DIRECT",
+        "b_value": 1
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 0,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 1,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": 0
+        },
+        {
+          "address": 2,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 4000,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "INDIRECT",
+          "b_value": 1,
+          "owner": 1
+        },
+        {
+          "address": 4001,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 3,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "round": 1,
+      "cycle": 159995,
+      "warriors_left": 1,
+      "current_warrior": {
+        "id": 1,
+        "name": "Flashpaper",
+        "pc": 4001,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 4001,
+        "opcode": "DAT",
+        "a_mode": "DIRECT",
+        "a_value": 0,
+        "b_mode": "DIRECT",
+        "b_value": 3
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 0,
+          "position": 0,
+          "alive": false
+        },
+        {
+          "id": 1,
+          "tasks": 1,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 0,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 1,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 1,
+          "owner": 0
+        },
+        {
+          "address": 2,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": 0
+        },
+        {
+          "address": 4000,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "INDIRECT",
+          "b_value": 1,
+          "owner": 1
+        },
+        {
+          "address": 4001,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 3,
+          "owner": 1
+        }
+      ]
+    }
+  ]
+}

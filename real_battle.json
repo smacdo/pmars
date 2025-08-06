@@ -1,0 +1,436 @@
+{
+  "simulation_info": {
+    "core_size": 8000,
+    "warriors": 2,
+    "max_cycles": 2000,
+    "rounds": 1
+  },
+  "warriors_info": [
+    {
+      "id": 0,
+      "name": "Rave",
+      "author": "Stefan Strack",
+      "position": 0,
+      "length": 12
+    },
+    {
+      "id": 1,
+      "name": "Flash Paper3.7",
+      "author": "Matt Hastings",
+      "position": 4000,
+      "length": 100
+    }
+  ],
+  "execution_steps": [
+    {
+      "step": 0,
+      "round": 1,
+      "cycle": 2000,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 0,
+        "name": "Rave",
+        "pc": 1,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 1,
+        "opcode": "CMP",
+        "modifier": "I",
+        "a_mode": "IMMEDIATE",
+        "a_value": 125,
+        "b_mode": "IMMEDIATE",
+        "b_value": 113
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 8,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 0,
+          "opcode": "SUB",
+          "a_mode": "DIRECT",
+          "a_value": 11,
+          "b_mode": "IMMEDIATE",
+          "b_value": 1,
+          "owner": 0
+        },
+        {
+          "address": 1,
+          "opcode": "CMP",
+          "a_mode": "IMMEDIATE",
+          "a_value": 125,
+          "b_mode": "IMMEDIATE",
+          "b_value": 113,
+          "owner": 0
+        },
+        {
+          "address": 2,
+          "opcode": "SLT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 24,
+          "b_mode": "IMMEDIATE",
+          "b_value": -1,
+          "owner": 0
+        },
+        {
+          "address": 3,
+          "opcode": "DJN",
+          "a_mode": "DIRECT",
+          "a_value": -3,
+          "b_mode": "PREDECR",
+          "b_value": -308,
+          "owner": 0
+        },
+        {
+          "address": 4,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 14,
+          "b_mode": "IMMEDIATE",
+          "b_value": 2,
+          "owner": 0
+        },
+        {
+          "address": 4000,
+          "opcode": "SPL",
+          "a_mode": "IMMEDIATE",
+          "a_value": 89,
+          "b_mode": "PREDECR",
+          "b_value": -2050,
+          "owner": 1
+        },
+        {
+          "address": 4001,
+          "opcode": "SPL",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "PREDECR",
+          "b_value": 440,
+          "owner": 1
+        },
+        {
+          "address": 4002,
+          "opcode": "SPL",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "PREDECR",
+          "b_value": 460,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "round": 1,
+      "cycle": 1999,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 1,
+        "name": "Flash Paper3.7",
+        "pc": 4000,
+        "tasks": 8
+      },
+      "current_instruction": {
+        "address": 4000,
+        "opcode": "SPL",
+        "modifier": "B",
+        "a_mode": "IMMEDIATE",
+        "a_value": 89,
+        "b_mode": "PREDECR",
+        "b_value": -2050
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 8,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 0,
+          "opcode": "SUB",
+          "a_mode": "DIRECT",
+          "a_value": 11,
+          "b_mode": "IMMEDIATE",
+          "b_value": 1,
+          "owner": 0
+        },
+        {
+          "address": 1,
+          "opcode": "CMP",
+          "a_mode": "IMMEDIATE",
+          "a_value": 125,
+          "b_mode": "IMMEDIATE",
+          "b_value": 113,
+          "owner": 0
+        },
+        {
+          "address": 1950,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": -1
+        },
+        {
+          "address": 4000,
+          "opcode": "SPL",
+          "a_mode": "IMMEDIATE",
+          "a_value": 89,
+          "b_mode": "PREDECR",
+          "b_value": -2050,
+          "owner": 1
+        },
+        {
+          "address": 4089,
+          "opcode": "SPL",
+          "a_mode": "IMMEDIATE",
+          "a_value": 6,
+          "b_mode": "PREDECR",
+          "b_value": -2030,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "round": 1,
+      "cycle": 1998,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 0,
+        "name": "Rave",
+        "pc": 2,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 2,
+        "opcode": "SLT",
+        "modifier": "A",
+        "a_mode": "IMMEDIATE",
+        "a_value": 24,
+        "b_mode": "IMMEDIATE",
+        "b_value": -1
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 9,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 0,
+          "opcode": "SUB",
+          "a_mode": "DIRECT",
+          "a_value": 11,
+          "b_mode": "IMMEDIATE",
+          "b_value": 1,
+          "owner": 0
+        },
+        {
+          "address": 1,
+          "opcode": "CMP",
+          "a_mode": "IMMEDIATE",
+          "a_value": 125,
+          "b_mode": "IMMEDIATE",
+          "b_value": 113,
+          "owner": 0
+        },
+        {
+          "address": 2,
+          "opcode": "SLT",
+          "a_mode": "IMMEDIATE",
+          "a_value": 24,
+          "b_mode": "IMMEDIATE",
+          "b_value": -1,
+          "owner": 0
+        },
+        {
+          "address": 4000,
+          "opcode": "SPL",
+          "a_mode": "IMMEDIATE",
+          "a_value": 89,
+          "b_mode": "PREDECR",
+          "b_value": -2050,
+          "owner": 1
+        },
+        {
+          "address": 4001,
+          "opcode": "SPL",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "PREDECR",
+          "b_value": 440,
+          "owner": 1
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "round": 1,
+      "cycle": 1997,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 1,
+        "name": "Flash Paper3.7",
+        "pc": 4001,
+        "tasks": 9
+      },
+      "current_instruction": {
+        "address": 4001,
+        "opcode": "SPL",
+        "modifier": "B",
+        "a_mode": "IMMEDIATE",
+        "a_value": 1,
+        "b_mode": "PREDECR",
+        "b_value": 440
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 9,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 0,
+          "opcode": "SUB",
+          "a_mode": "DIRECT",
+          "a_value": 11,
+          "b_mode": "IMMEDIATE",
+          "b_value": 1,
+          "owner": 0
+        },
+        {
+          "address": 4001,
+          "opcode": "SPL",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "PREDECR",
+          "b_value": 440,
+          "owner": 1
+        },
+        {
+          "address": 4002,
+          "opcode": "SPL",
+          "a_mode": "IMMEDIATE",
+          "a_value": 1,
+          "b_mode": "PREDECR",
+          "b_value": 460,
+          "owner": 1
+        },
+        {
+          "address": 4441,
+          "opcode": "DAT",
+          "a_mode": "DIRECT",
+          "a_value": 0,
+          "b_mode": "DIRECT",
+          "b_value": 0,
+          "owner": -1
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "round": 1,
+      "cycle": 1996,
+      "warriors_left": 2,
+      "current_warrior": {
+        "id": 0,
+        "name": "Rave",
+        "pc": 4,
+        "tasks": 1
+      },
+      "current_instruction": {
+        "address": 4,
+        "opcode": "MOV",
+        "modifier": "AB",
+        "a_mode": "IMMEDIATE",
+        "a_value": 14,
+        "b_mode": "IMMEDIATE",
+        "b_value": 2
+      },
+      "warrior_states": [
+        {
+          "id": 0,
+          "tasks": 1,
+          "position": 0,
+          "alive": true
+        },
+        {
+          "id": 1,
+          "tasks": 10,
+          "position": 4000,
+          "alive": true
+        }
+      ],
+      "memory_changes": [
+        {
+          "address": 4,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 14,
+          "b_mode": "IMMEDIATE",
+          "b_value": 2,
+          "owner": 0
+        },
+        {
+          "address": 5,
+          "opcode": "MOV",
+          "a_mode": "IMMEDIATE",
+          "a_value": 4,
+          "b_mode": "POSTINC",
+          "b_value": -4,
+          "owner": 0
+        },
+        {
+          "address": 6,
+          "opcode": "DJN",
+          "a_mode": "IMMEDIATE",
+          "a_value": -1,
+          "b_mode": "IMMEDIATE",
+          "b_value": 0,
+          "owner": 0
+        }
+      ]
+    }
+  ]
+}
