@@ -1,6 +1,6 @@
 /* pMARS -- a portable Memory Array Redcode Simulator
- * Copyright (C) 1993-1996 Albert Ma, Na'ndor Sieben, Stefan Strack and Mintardjo Wangsawidjaja
- * Copyright (C) 2000 Ilmari Karonen
+ * Copyright (C) 1993-1996 Albert Ma, Na'ndor Sieben, Stefan Strack and
+ * Mintardjo Wangsawidjaja Copyright (C) 2000 Ilmari Karonen
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,9 @@
  *          Ken Espiritu   (kespirit@cesun1.ce.vt.edu)
  */
 
+#ifndef GLOBAL_H_INCLUDED
+#define GLOBAL_H_INCLUDED
+
 #include "config.h"
 #include <stdio.h>
 #ifndef INT_MAX
@@ -32,6 +35,14 @@
 #endif
 #if defined(__STDC__) || defined(__MSDOS__)
 #include <stdlib.h>
+#endif
+#ifndef LONG_MAX
+#include <limits.h>
+#endif
+
+/* Define NEW_STYLE early for proper conditional compilation */
+#if defined(__STDC__) || defined(DOS16)
+#define NEW_STYLE
 #endif
 
 /* *********************************************************************
@@ -51,12 +62,11 @@ typedef char *pointer_t;
 #if defined(__TURBOC__)
 
 #include <alloc.h>
-#define MALLOC(x)     malloc((size_t)(x))
+#define MALLOC(x) malloc((size_t)(x))
 #define REALLOC(x, y) realloc((pointer_t)(x), (size_t)(y))
-#define FREE(x)       free((pointer_t)(x))
+#define FREE(x) free((pointer_t)(x))
 
-#endif                                /* __TURBOC__ */
-
+#endif /* __TURBOC__ */
 
 /* ***** Microsoft/Quick C FAR model ***** */
 #if defined(_MSC_VER)
@@ -64,26 +74,25 @@ typedef char *pointer_t;
 /* Need to test these predefined macros */
 #include <malloc.h>
 
-#define MALLOC(x)     _fmalloc((size_t)(x))
+#define MALLOC(x) _fmalloc((size_t)(x))
 #define REALLOC(x, y) _frealloc((pointer_t)(x), (size_t)(y))
-#define FREE(x)       _ffree((pointer_t)(x))
+#define FREE(x) _ffree((pointer_t)(x))
 
 #define DOSFARMODEL
 
-#endif                                /* _MSC_VER */
+#endif /* _MSC_VER */
 
-#endif                                /* DOS16 */
-
+#endif /* DOS16 */
 
 /***** Others which don't have MALLOC() defined. *****/
 
 #if !defined(MALLOC)
 
-#define MALLOC(x)     malloc((size_t)(x))
+#define MALLOC(x) malloc((size_t)(x))
 #define REALLOC(x, y) realloc((pointer_t)(x), (size_t)(y))
-#define FREE(x)       free((pointer_t)(x))
+#define FREE(x) free((pointer_t)(x))
 
-#endif                                /* ! MALLOC */
+#endif /* ! MALLOC */
 
 /***** Miscellaneous *****/
 
@@ -94,9 +103,9 @@ typedef char *pointer_t;
 #define NULL 0L
 #else
 #define NULL 0
-#endif                                /* DOSFARMODEL */
+#endif /* DOSFARMODEL */
 
-#endif                                /* NULL */
+#endif /* NULL */
 
 /* unsigned types (renamed to avoid conflict with possibly predefined types) */
 typedef unsigned char uChar;
@@ -105,196 +114,239 @@ typedef unsigned long uLong;
 
 /* FALSE, TRUE */
 #ifndef TRUE
-enum {
-  FALSE, TRUE
-};
+enum { FALSE, TRUE };
 #endif
 
 /* global error output macro */
 #ifdef MACGRAPHX
 #define errout(s) macputs(s)
 #else
-#define errout(s) fputs(s,stderr)
+#define errout(s) fputs(s, stderr)
 #endif
 
 /* ************************************************************************
    pmars global structures and definitions
    ************************************************************************ */
 
-#if defined(__STDC__)  || defined(DOS16)
-#define NEW_STYLE
-#endif
-
 /* Version and date */
 
-#define PMARSVER  94
+#define PMARSVER 94
 #define PMARSDATE "04/07/22"
 
-#ifdef VMS                        /* Must change codes to work with VMS error
-                                 * handling */
-extern  PMARS_FATAL, PMARS_BADCOMLIN, PMARS_PARSEERR;
-#define GRAPHERR   1                /* no grphx yet */
-#define NOT386     1                /* if this error occurs, I don't wanna hear
-                                 * about it. */
-#define MEMERR   292                /* %SYS-E-INSFMEM */
-#define SERIOUS  &PMARS_FATAL        /* %PMARS-F-FATAL */
-#define FNOFOUND 98962                /* %RMS-E-FNF */
-#define CLP_NOGOOD &PMARS_BADCOMLIN        /* %PMARS-E-BADCOMLIN */
-#define PARSEERR &PMARS_PARSEERR/* ENDABORT */
+#ifdef VMS /* Must change codes to work with VMS error                         \
+            * handling */
+extern PMARS_FATAL, PMARS_BADCOMLIN, PMARS_PARSEERR;
+#define GRAPHERR 1 /* no grphx yet */
+#define NOT386                                                                 \
+  1                          /* if this error occurs, I don't wanna hear       \
+                              * about it. */
+#define MEMERR 292           /* %SYS-E-INSFMEM */
+#define SERIOUS &PMARS_FATAL /* %PMARS-F-FATAL */
+#define FNOFOUND 98962       /* %RMS-E-FNF */
+#define CLP_NOGOOD &PMARS_BADCOMLIN /* %PMARS-E-BADCOMLIN */
+#define PARSEERR &PMARS_PARSEERR    /* ENDABORT */
 #define USERABORT 44                /* %SYS-E-ABORT */
-#else                                /* everyone else */
+#else                               /* everyone else */
 /* return code:
    0: success
    Negative number: System error such as insufficient space, etc
    Positive number: User error such as number too big, file not found, etc */
-#define GRAPHERR  -4                /* graphic error */
-#define NOT386    -3                /* trying to execute 386 code on lesser
-                                 * machine */
-#define MEMERR    -2                /* insufficient memory, cannot free, etc. */
-#define SERIOUS   -1                /* program logic error */
-#define FNOFOUND   1                /* File not found */
-#define CLP_NOGOOD 2                /* command line argument error */
-#define PARSEERR   3                /* File doesn't assemble correctly */
-#define USERABORT  4                /* user stopped program from cdb, etc. */
+#define GRAPHERR -4                 /* graphic error */
+#define NOT386                                                                 \
+  -3                 /* trying to execute 386 code on lesser                   \
+                      * machine */
+#define MEMERR -2    /* insufficient memory, cannot free, etc. */
+#define SERIOUS -1   /* program logic error */
+#define FNOFOUND 1   /* File not found */
+#define CLP_NOGOOD 2 /* command line argument error */
+#define PARSEERR 3   /* File doesn't assemble correctly */
+#define USERABORT 4  /* user stopped program from cdb, etc. */
 #endif
 
 /* these are used as return codes of internal functions */
-#define SUCCESS    0
-#define WARNING    0
+#define SUCCESS 0
+#define WARNING 0
 
 /* used by eval.c */
-#define OVERFLOW  1
-#define OK_EXPR   0
+#define OVERFLOW 1
+#define OK_EXPR 0
 #define BAD_EXPR -1
 #define DIV_ZERO -2
 
 /* used by cdb.c */
 #define NOBREAK 0
-#define BREAK   1
-#define STEP    2
+#define BREAK 1
+#define STEP 2
 
-#define SKIP    1                /* cmdMod settings for cdb: skip next command */
-#define RESET   2                /* clear command queue */
+#define SKIP 1  /* cmdMod settings for cdb: skip next command */
+#define RESET 2 /* clear command queue */
 
-#define UNSHARED -1                /* P-space is private */
+#define UNSHARED -1 /* P-space is private */
 #define PIN_APPEARED -2
 
 /* used by sim.c and asm.c */
 #ifdef NEW_MODES
 #define INDIR_A(x) (0x80 & (x))
 #define RAW_MODE(x) (0x7F & (x))
-#define SYM_TO_INDIR_A(x) ( ((x) - 3) | 0x80)        /* turns index into
-                                                 * addr_sym[] to INDIR_A code */
-#define INDIR_A_TO_SYM(x) ( RAW_MODE(x) + 3 )        /* vice versa */
+#define SYM_TO_INDIR_A(x)                                                      \
+  (((x) - 3) | 0x80)                        /* turns index into                \
+                                             * addr_sym[] to INDIR_A code */
+#define INDIR_A_TO_SYM(x) (RAW_MODE(x) + 3) /* vice versa */
 #endif
 
 /* used by many */
 #define STDOUT stdout
 
 #ifdef DOS16
-#define MAXCORESIZE   8192
+#define MAXCORESIZE 8192
 #else
 #ifdef SMALLMEM
-#define MAXCORESIZE   65535
+#define MAXCORESIZE 65535
 #else
-#define MAXCORESIZE   ((INT_MAX>>1)+1)
+#define MAXCORESIZE ((INT_MAX >> 1) + 1)
 #endif
 #endif
 
-#define MAXTASKNUM    INT_MAX
-#define MAXROUND      INT_MAX
-#define MAXCYCLE      LONG_MAX
+#define MAXTASKNUM INT_MAX
+#define MAXROUND INT_MAX
+#define MAXCYCLE LONG_MAX
 #ifdef DOS16
-#define MAXWARRIOR         8
+#define MAXWARRIOR 8
 #else
-#define MAXWARRIOR        36
+#define MAXWARRIOR 36
 #endif
-#define MAXINSTR         1000
+#define MAXINSTR 1000
 
-#define MAXSEPARATION MAXCORESIZE/MAXWARRIOR
+#define MAXSEPARATION MAXCORESIZE / MAXWARRIOR
 
 #define MAXALLCHAR 8000
 
 /* The following holds the order in which opcodes, modifiers, and addr_modes
    are represented as in parser. The enumerated field should start from zero */
 enum addr_mode {
-  IMMEDIATE,                        /* # */
-  DIRECT,                        /* $ */
-  INDIRECT,                        /* @ */
-  PREDECR,                        /* < */
-  POSTINC                        /* > */
+  IMMEDIATE, /* # */
+  DIRECT,    /* $ */
+  INDIRECT,  /* @ */
+  PREDECR,   /* < */
+  POSTINC    /* > */
 };
 
 enum op {
-  MOV, ADD, SUB, MUL, DIV, MOD, JMZ,
-  JMN, DJN, CMP, SLT, SPL, DAT, JMP,
-  SEQ,  SNE, NOP, LDP, STP
-};                                /* has to match asm.c:opname[] */
+  MOV,
+  ADD,
+  SUB,
+  MUL,
+  DIV,
+  MOD,
+  JMZ,
+  JMN,
+  DJN,
+  CMP,
+  SLT,
+  SPL,
+  DAT,
+  JMP,
+  SEQ,
+  SNE,
+  NOP,
+  LDP,
+  STP,
+  SLP,
+  ZAP
+}; /* has to match asm.c:opname[] */
 
 enum modifier {
-  mA,                                /* .A */
-  mB,                                /* .B */
-  mAB,                                /* .AB */
-  mBA,                                /* .BA */
-  mF,                                /* .F */
-  mX,                                /* .X */
-  mI                                /* .I */
+  mA,  /* .A */
+  mB,  /* .B */
+  mAB, /* .AB */
+  mBA, /* .BA */
+  mF,  /* .F */
+  mX,  /* .X */
+  mI   /* .I */
 };
 
+/* Default energy costs per instruction (can be overridden) */
+#define DEFAULT_ENERGY 1000
+#define ENERGY_COST_MOV 1
+#define ENERGY_COST_ADD 2
+#define ENERGY_COST_SUB 2
+#define ENERGY_COST_MUL 3
+#define ENERGY_COST_DIV 4
+#define ENERGY_COST_MOD 4
+#define ENERGY_COST_JMZ 1
+#define ENERGY_COST_JMN 1
+#define ENERGY_COST_DJN 2
+#define ENERGY_COST_CMP 2
+#define ENERGY_COST_SLT 2
+#define ENERGY_COST_SPL 5
+#define ENERGY_COST_DAT 0
+#define ENERGY_COST_JMP 1
+#define ENERGY_COST_SEQ 2
+#define ENERGY_COST_SNE 2
+#define ENERGY_COST_NOP 1
+#define ENERGY_COST_LDP 3
+#define ENERGY_COST_STP 3
+#define ENERGY_COST_SLP 1
+#define ENERGY_COST_ZAP 3 /* base cost, multiplied by memory locations zeroed  \
+                           */
 
 #ifdef SMALLMEM
 typedef unsigned short ADDR_T;
-#define ISNEG(x) ((x)==0xFFFF)        /* use for unsigned ADDR_T */
+#define ISNEG(x) ((x) == 0xFFFF) /* use for unsigned ADDR_T */
 #else
 typedef int ADDR_T;
-#define ISNEG(x) ((x)<0)
+#define ISNEG(x) ((x) < 0)
 #endif
 
 typedef unsigned char FIELD_T;
 #ifdef DOS16
-typedef unsigned long U32_T;        /* unsigned long (32 bits) */
+typedef unsigned long U32_T; /* unsigned long (32 bits) */
 typedef long S32_T;
 #else
-typedef unsigned int U32_T;        /* unsigned int (32 bits) */
+typedef unsigned int U32_T; /* unsigned int (32 bits) */
 typedef int S32_T;
 #endif
 
 /* Memory structure */
 typedef struct mem_struct {
-  ADDR_T  A_value, B_value;
+  ADDR_T A_value, B_value;
   FIELD_T opcode;
   FIELD_T A_mode, B_mode;
   FIELD_T debuginfo;
 
-}       mem_struct;
+} mem_struct;
 
 /* Warrior structure */
 typedef struct warrior_struct {
-  long    pSpaceIDNumber;
+  long pSpaceIDNumber;
 #ifdef DOS16
-  ADDR_T far *taskHead, far * taskTail;
+  ADDR_T far *taskHead, far *taskTail;
 #else
   ADDR_T *taskHead, *taskTail;
 #endif
-  int     tasks;
-  ADDR_T  lastResult;
-  int     pSpaceIndex;
-  ADDR_T  position;                /* load position in core */
-  int     instLen;                /* Length of instBank */
-  int     offset;                /* Offset value specified by 'ORG' or 'END'.
-                                 * 0 is default */
-  short   score[MAXWARRIOR * 2 - 1];
+  int tasks;
+  ADDR_T lastResult;
+  int pSpaceIndex;
+  ADDR_T position; /* load position in core */
+  int instLen;     /* Length of instBank */
+  int offset;      /* Offset value specified by 'ORG' or 'END'.
+                    * 0 is default */
+  short score[MAXWARRIOR * 2 - 1];
 
-  char   *name;                        /* warrior name */
-  char   *version;
-  char   *date;
-  char   *fileName;                /* file name */
-  char   *authorName;                /* author name */
+  /* Energy system fields */
+  long energy;    /* current energy */
+  long maxEnergy; /* initial/maximum energy */
+
+  char *name; /* warrior name */
+  char *version;
+  char *date;
+  char *fileName;   /* file name */
+  char *authorName; /* author name */
   mem_struct *instBank;
 
   struct warrior_struct *nextWarrior;
 
-}       warrior_struct;
+} warrior_struct;
 
 /* ***********************************************************************
    pmars global variable declarations
@@ -318,7 +370,6 @@ extern ADDR_T readLimit;
 extern ADDR_T writeLimit;
 #endif
 
-
 extern int cmdMod;
 extern S32_T seed;
 extern int useExtRNG;
@@ -329,7 +380,7 @@ extern int SWITCH_k;
 extern int SWITCH_8;
 extern int SWITCH_f;
 extern char *SWITCH_F;
-extern ADDR_T SWITCH_Fnum;	/* an integer value of the -F parameter */
+extern ADDR_T SWITCH_Fnum; /* an integer value of the -F parameter */
 extern int SWITCH_V;
 extern int SWITCH_o;
 extern int SWITCH_Q;
@@ -345,15 +396,15 @@ extern int SWITCH_A;
 extern int inCdb;
 extern int debugState;
 extern int copyDebugInfo;
-#if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) \
-    || defined(XWINGRAPHX)
+#if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) ||  \
+    defined(XWINGRAPHX)
 extern int inputRedirection;
 #endif
 #if defined(XWINGRAPHX)
 extern int xWinArgc;
 extern char **xWinArgv;
 #endif
-extern mem_struct INITIALINST;        /* initialize to DAT.F $0,$0 */
+extern mem_struct INITIALINST; /* initialize to DAT.F $0,$0 */
 
 extern warrior_struct warrior[MAXWARRIOR];
 #ifdef DOS16
@@ -363,25 +414,30 @@ extern ADDR_T *pSpace[MAXWARRIOR];
 #endif
 extern ADDR_T pSpaceSize;
 
+/* Energy system global variables */
+extern int SWITCH_E;        /* enable energy system */
+extern long defaultEnergy;  /* default energy per warrior */
+extern int energyCosts[21]; /* energy costs per opcode */
+
 /* ***********************************************************************
    display define's, declarations and typedefs
    *********************************************************************** */
 
-#if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) \
-    || defined(XWINGRAPHX)
+#if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) ||  \
+    defined(XWINGRAPHX)
 
-#if !defined(LINUXGRAPHX)        /* vga.h already defines TEXT to be 0 */
-#define         TEXT 0
+#if !defined(LINUXGRAPHX) /* vga.h already defines TEXT to be 0 */
+#define TEXT 0
 #endif
-#define         GRX 1
-#define         SPEEDLEVELS 9
-#define         NORMAL_ATTR 0x0700
+#define GRX 1
+#define SPEEDLEVELS 9
+#define NORMAL_ATTR 0x0700
 extern int displayLevel;
 extern int displayMode;
 extern int displaySpeed;
 extern int SWITCH_v;
 
-#if defined(LINUXGRAPHX)        /* needed for correct keyboard handling */
+#if defined(LINUXGRAPHX) /* needed for correct keyboard handling */
 extern struct termios tio_orig;
 extern int console_fd;
 #endif
@@ -391,7 +447,7 @@ extern int console_fd;
 #include <curses.h>
 #if defined(A_NORMAL) || defined(A_BOLD) || defined(A_REVERSE)
 #define ATTRIBUTE
-#endif                                /* A_* */
+#endif /* A_* */
 
 extern int refreshInterval;
 extern int refIvalAr[SPEEDLEVELS];
@@ -403,10 +459,9 @@ extern int keyDelayAr[SPEEDLEVELS];
 extern unsigned long loopDelay;
 extern unsigned long loopDelayAr[SPEEDLEVELS];
 
-#endif                                /* CURSESGRAPHX */
-#endif                                /* DOSTXTGRAPHX and DOSGRXGRAPHX and
-                                 * LINUXGRAPHX */
-
+#endif /* CURSESGRAPHX */
+#endif /* DOSTXTGRAPHX and DOSGRXGRAPHX and                                    \
+        * LINUXGRAPHX */
 
 /* ***********************************************************************
    function prototypes
@@ -414,25 +469,24 @@ extern unsigned long loopDelayAr[SPEEDLEVELS];
 
 #ifdef NEW_STYLE
 
-extern int
-        parse_param(int argc, char *argv[]);
+extern int parse_param(int argc, char *argv[]);
 extern int eval_expr(char *expr, long *result);
 extern int assemble(char *fName, int aWarrior);
-extern void disasm(mem_struct * cells, ADDR_T n, ADDR_T offset);
+extern void disasm(mem_struct *cells, ADDR_T n, ADDR_T offset);
 extern void simulator1(void);
 extern char *locview(ADDR_T loc, char *outp);
 extern int cdb(char *msg);
 extern int score(int warnum);
 extern void sort_by_score(int *idxV, int *scrV);
 extern int deaths(int warnum);
-extern void results(FILE * outp);
+extern void results(FILE *outp);
 extern void sort_by_score();
 extern void Exit(int code);
 extern void reset_regs(void);
 extern void set_reg(char regChr, long val);
 
-#if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) \
-    || defined(XWINGRAPHX)
+#if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) ||  \
+    defined(XWINGRAPHX)
 extern void decode_vopt(int option);
 #ifndef LINUXGRAPHX
 extern void grputs(char *str);
@@ -463,17 +517,15 @@ extern void xWin_resize(void);
 #endif
 
 #ifdef DOS16
-extern char *cellview(mem_struct far * cell, char *outp, int emptyDisp);
+extern char *cellview(mem_struct far *cell, char *outp, int emptyDisp);
 #else
-extern char *cellview(mem_struct * cell, char *outp, int emptyDisp);
+extern char *cellview(mem_struct *cell, char *outp, int emptyDisp);
 #endif
 
 #else
 
-extern int
-        parse_param();
-extern int
-        eval_expr();
+extern int parse_param();
+extern int eval_expr();
 extern int assemble();
 extern void disasm();
 extern void simulator1();
@@ -492,7 +544,7 @@ extern void decode_vopt();
 extern void aputs5();
 #endif
 
-#if defined (LINUXGRAPHX)
+#if defined(LINUXGRAPHX)
 extern char *svga_gets();
 extern void svga_puts();
 extern void svga_display_close();
@@ -514,4 +566,6 @@ extern char *xWin_gets();
 extern void xWin_resize();
 #endif
 
-#endif
+#endif /* NEW_STYLE */
+
+#endif /* GLOBAL_H_INCLUDED */
