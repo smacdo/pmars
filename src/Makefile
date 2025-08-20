@@ -31,7 +31,7 @@ MAINFILE = pmars
 HEADER = global.h config.h asm.h sim.h
 OBJ1 = pmars.o asm.o eval.o disasm.o cdb.o sim.o pos.o
 OBJ2 = clparse.o global.o token.o
-OBJ3 = str_eng.o
+OBJ3 = str_eng.o visualizer.o
 
 all: flags $(MAINFILE)
 
