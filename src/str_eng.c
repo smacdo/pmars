@@ -473,4 +473,6 @@ char *Opening = "Opening";
 char *EndMod = "END MODULE\n";
 #endif /* VMS */
 
+char *optRecord = "\nrecord simulation to file\n";
+
 #endif /* PMARSLANG == ENGLISH */

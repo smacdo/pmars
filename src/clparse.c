@@ -71,7 +71,7 @@ extern char *credits_screen1, *credits_screen2, *credits_screen3, *usage_screen,
     *optSort, *optView, *optScoreFormula, *optDIAOutput, *noWarriorFile,
     *fFExclusive, *coreSizeTooSmall, *dLessThanl, *FLessThand, *outOfMemory,
     *badScoreFormula, *optPSpaceSize, *pSpaceTooBig, *optPermutate,
-    *permutateMultiWarrior, *optAssemble, *optEnergy, *optEnergyAmount;
+    *permutateMultiWarrior, *optAssemble, *optEnergy, *optEnergyAmount, *optRecord;
 
 #ifdef RWLIMIT
 extern char *optReadLimit, *optWriteLimit, *badRWLimit;
@@ -458,7 +458,7 @@ char **largv;
    ********************************************************************/
 
 #define OPTNUM                                                                 \
-  24 /* don't forget to increase when adding new                               \
+  25 /* don't forget to increase when adding new                               \
       * options */
   static clp_opt_t options[OPTNUM];
   int optI = 0; /* used by record() macro */
@@ -515,6 +515,7 @@ char **largv;
 #if defined(VMS)
   record('D', clp_bool, &SWITCH_D, 0, 1, 0, optDIAOutput);
 #endif
+  record('T', clp_str, &SWITCH_R, 0, 0, 0, "record simulation to file");
   record((char)0, (clp_dtype_t)0, NULL, 0, 0, 0, NULL);
   /*******************************************************************/
   /* initializing default values                                     */

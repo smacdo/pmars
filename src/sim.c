@@ -27,6 +27,7 @@
 
 #include "sim.h"
 #include "global.h"
+#include "visualizer.h"
 #include <time.h>
 #include <unistd.h>
 
@@ -320,6 +321,8 @@ void simulator1() {
 #endif
 
   display_init();
+  viz_init(); /* Initialize visualization recording */
+
   sim_round = 1;
   do { /* each round */
 #if defined(DOS16) && !defined(SERVER) && !defined(DOSTXTGRAPHX) &&            \
@@ -386,16 +389,19 @@ void simulator1() {
         *destPtr++ = *sourcePtr++;
       }
       display_spl(temp, 1);
+      VIZ_SPL(temp, 1);
       W = W->nextWarrior;
     } while (++temp < warriors);
 
     display_clear();
+
     /* the inner loop of execution */
     do {           /* each cycle */
       usleep(100); // TODO: make this configurable
       display_cycle();
       // progCnt = *(W->taskHead++);
       // IR = memory[progCnt];        /* copy instruction into register */
+      VIZ_CYCLE(); /* Log cycle start */
       IR = memory[(progCnt = *(W->taskHead++))];
 #ifndef DOS16
       if (W->taskHead == endQueue)
@@ -439,6 +445,7 @@ void simulator1() {
 #endif
             {
               display_read(addrA); /* INDIRECT -> read from base ofs. cell. */
+              VIZ_READ(addrA);
             }
             offsPtr = &(tempPtr->A_value);
           } else {
@@ -449,6 +456,7 @@ void simulator1() {
 #endif
             {
               display_read(addrA); /* INDIRECT -> read from base ofs cell. */
+              VIZ_READ(addrA);
             }
             offsPtr = &(tempPtr->B_value);
           }
@@ -494,6 +502,7 @@ void simulator1() {
             tempPtr->B_value = temp;
 #endif
             display_inc(waddrA);
+            VIZ_INC(waddrA);
           }
         } else /* DIRECT */
         {
@@ -548,6 +557,7 @@ void simulator1() {
 #endif
             {
               display_read(raddrB); /* INDIRECT -> read from base ofs. cell. */
+              VIZ_READ(raddrB);
             }
             offsPtr = &(tempPtr->A_value);
           } else {
@@ -558,6 +568,7 @@ void simulator1() {
 #endif
             {
               display_read(raddrB); /* INDIRECT -> read from base ofs cell. */
+              VIZ_READ(raddrB);
             }
             offsPtr = &(tempPtr->B_value);
           }
@@ -604,6 +615,7 @@ void simulator1() {
             tempPtr->B_value = temp;
 #endif
             display_inc(tempPtr - &memory[0]);
+            VIZ_INC(tempPtr - &memory[0]);
           }
         } else {
 
@@ -650,6 +662,7 @@ void simulator1() {
 
       /* execute it! */
       display_exec(progCnt);
+      VIZ_EXEC(progCnt); /* Log instruction execution */
 
       /* Deduct energy cost for this instruction */
       if (SWITCH_E) {
@@ -664,8 +677,10 @@ void simulator1() {
 
       case OP(MOV, mA):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].A_value = ADDRA_AVALUE;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(MOV, mF):
@@ -673,14 +688,18 @@ void simulator1() {
         /* FALLTHRU */
       case OP(MOV, mB):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].B_value = IR.A_value;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(MOV, mAB):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].B_value = ADDRA_AVALUE;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(MOV, mX):
@@ -688,15 +707,19 @@ void simulator1() {
         /* FALLTHRU */
       case OP(MOV, mBA):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].A_value = IR.A_value;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(ADD, mA):
         display_read(addrA);
+        VIZ_READ(addrA);
         ADDMOD(ADDRB_AVALUE, ADDRA_AVALUE, temp);
         memory[addrB].A_value = temp;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(ADD, mI):
@@ -706,16 +729,20 @@ void simulator1() {
         /* FALLTHRU */
       case OP(ADD, mB):
         display_read(addrA);
+        VIZ_READ(addrA);
         ADDMOD(IR.B_value, IR.A_value, temp);
         memory[addrB].B_value = temp;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(ADD, mAB):
         display_read(addrA);
+        VIZ_READ(addrA);
         ADDMOD(IR.B_value, ADDRA_AVALUE, temp);
         memory[addrB].B_value = temp;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(ADD, mX):
@@ -724,16 +751,20 @@ void simulator1() {
         /* FALLTHRU */
       case OP(ADD, mBA):
         display_read(addrA);
+        VIZ_READ(addrA);
         ADDMOD(ADDRB_AVALUE, IR.A_value, temp);
         memory[addrB].A_value = temp;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(SUB, mA):
         display_read(addrA);
+        VIZ_READ(addrA);
         SUBMOD(ADDRB_AVALUE, ADDRA_AVALUE, temp);
         memory[addrB].A_value = temp;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(SUB, mI):
@@ -743,16 +774,20 @@ void simulator1() {
         /* FALLTHRU */
       case OP(SUB, mB):
         display_read(addrA);
+        VIZ_READ(addrA);
         SUBMOD(IR.B_value, IR.A_value, temp);
         memory[addrB].B_value = temp;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(SUB, mAB):
         display_read(addrA);
+        VIZ_READ(addrA);
         SUBMOD(IR.B_value, ADDRA_AVALUE, temp);
         memory[addrB].B_value = temp;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(SUB, mX):
@@ -761,16 +796,20 @@ void simulator1() {
         /* FALLTHRU */
       case OP(SUB, mBA):
         display_read(addrA);
+        VIZ_READ(addrA);
         SUBMOD(ADDRB_AVALUE, IR.A_value, temp);
         memory[addrB].A_value = temp;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
         /* the cast prevents overflow */
       case OP(MUL, mA):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].A_value = (U32_T)ADDRB_AVALUE * ADDRA_AVALUE % coreSize;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(MUL, mI):
@@ -779,14 +818,18 @@ void simulator1() {
         /* FALLTHRU */
       case OP(MUL, mB):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].B_value = (U32_T)IR.B_value * IR.A_value % coreSize;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(MUL, mAB):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].B_value = (U32_T)IR.B_value * ADDRA_AVALUE % coreSize;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(MUL, mX):
@@ -794,150 +837,185 @@ void simulator1() {
         /* FALLTHRU */
       case OP(MUL, mBA):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].A_value = (U32_T)ADDRB_AVALUE * IR.A_value % coreSize;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(DIV, mA):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (!ADDRA_AVALUE)
           goto die;
         memory[addrB].A_value = ADDRB_AVALUE / ADDRA_AVALUE;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(DIV, mB):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (!IR.A_value)
           goto die;
         memory[addrB].B_value = IR.B_value / IR.A_value;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(DIV, mAB):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (!ADDRA_AVALUE)
           goto die;
         memory[addrB].B_value = IR.B_value / ADDRA_AVALUE;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(DIV, mBA):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (!IR.A_value)
           goto die;
         memory[addrB].A_value = ADDRB_AVALUE / IR.A_value;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(DIV, mI):
       case OP(DIV, mF):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (ADDRA_AVALUE) {
           memory[addrB].A_value = ADDRB_AVALUE / ADDRA_AVALUE;
           display_write(addrB);
+VIZ_WRITE(addrB);
           if (!IR.A_value)
             goto die;
           memory[addrB].B_value = IR.B_value / IR.A_value;
           display_write(addrB);
+VIZ_WRITE(addrB);
           break;
         } else {
           if (!IR.A_value)
             goto die;
           memory[addrB].B_value = IR.B_value / IR.A_value;
           display_write(addrB);
+VIZ_WRITE(addrB);
           goto die;
         }
       case OP(DIV, mX):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (IR.A_value) {
           memory[addrB].A_value = ADDRB_AVALUE / IR.A_value;
           display_write(addrB);
+VIZ_WRITE(addrB);
           if (!ADDRA_AVALUE)
             goto die;
           memory[addrB].B_value = IR.B_value / ADDRA_AVALUE;
           display_write(addrB);
+VIZ_WRITE(addrB);
           break;
         } else {
           if (!ADDRA_AVALUE)
             goto die;
           memory[addrB].B_value = IR.B_value / ADDRA_AVALUE;
           display_write(addrB);
+VIZ_WRITE(addrB);
           goto die;
         }
 
       case OP(MOD, mA):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (!ADDRA_AVALUE)
           goto die;
         memory[addrB].A_value = ADDRB_AVALUE % ADDRA_AVALUE;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(MOD, mB):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (!IR.A_value)
           goto die;
         memory[addrB].B_value = IR.B_value % IR.A_value;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(MOD, mAB):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (!ADDRA_AVALUE)
           goto die;
         memory[addrB].B_value = IR.B_value % ADDRA_AVALUE;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(MOD, mBA):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (!IR.A_value)
           goto die;
         memory[addrB].A_value = ADDRB_AVALUE % IR.A_value;
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(MOD, mI):
       case OP(MOD, mF):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (ADDRA_AVALUE) {
           memory[addrB].A_value = ADDRB_AVALUE % ADDRA_AVALUE;
           display_write(addrB);
+VIZ_WRITE(addrB);
           if (!IR.A_value)
             goto die;
           memory[addrB].B_value = IR.B_value % IR.A_value;
           display_write(addrB);
+VIZ_WRITE(addrB);
           break;
         } else {
           if (!IR.A_value)
             goto die;
           memory[addrB].B_value = IR.B_value % IR.A_value;
           display_write(addrB);
+VIZ_WRITE(addrB);
           goto die;
         }
 
       case OP(MOD, mX):
         display_read(addrA);
+        VIZ_READ(addrA);
         if (IR.A_value) {
           memory[addrB].A_value = ADDRB_AVALUE % IR.A_value;
           display_write(addrB);
+VIZ_WRITE(addrB);
           if (!ADDRA_AVALUE)
             goto die;
           memory[addrB].B_value = IR.B_value % ADDRA_AVALUE;
           display_write(addrB);
+VIZ_WRITE(addrB);
           break;
         } else {
           if (!ADDRA_AVALUE)
             goto die;
           memory[addrB].B_value = IR.B_value % ADDRA_AVALUE;
           display_write(addrB);
+VIZ_WRITE(addrB);
           goto die;
         }
 
       case OP(JMZ, mA):
       case OP(JMZ, mBA):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         if (ADDRB_AVALUE)
           break;
         push(addrA);
@@ -947,12 +1025,14 @@ void simulator1() {
       case OP(JMZ, mX):
       case OP(JMZ, mI):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         if (ADDRB_AVALUE)
           break;
         /* FALLTHRU */
       case OP(JMZ, mB):
       case OP(JMZ, mAB):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         if (IR.B_value)
           break;
         push(addrA);
@@ -961,6 +1041,7 @@ void simulator1() {
       case OP(JMN, mA):
       case OP(JMN, mBA):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         if (!ADDRB_AVALUE)
           break;
         push(addrA);
@@ -969,6 +1050,7 @@ void simulator1() {
       case OP(JMN, mB):
       case OP(JMN, mAB):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         if (!IR.B_value)
           break;
         push(addrA);
@@ -978,6 +1060,7 @@ void simulator1() {
       case OP(JMN, mX):
       case OP(JMN, mI):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         if (!ADDRB_AVALUE && !IR.B_value)
           break;
         push(addrA);
@@ -989,8 +1072,10 @@ void simulator1() {
         if (ISNEG(--memory[addrB].A_value))
           memory[addrB].A_value = coreSize1;
         display_dec(addrB);
+        VIZ_DEC(addrB);
 #ifdef RWLIMIT
         display_read(raddrB);
+        VIZ_READ(raddrB);
 #endif
         if (AB_Value == 1)
           break;
@@ -998,8 +1083,10 @@ void simulator1() {
         if (!--memory[addrB].A_value)
           break;
         display_dec(addrB);
+        VIZ_DEC(addrB);
 #ifdef RWLIMIT
         display_read(raddrB);
+        VIZ_READ(raddrB);
 #endif
         if (ISNEG(memory[addrB].A_value))
           memory[addrB].A_value = coreSize1;
@@ -1012,8 +1099,10 @@ void simulator1() {
         if (ISNEG(--memory[addrB].B_value))
           memory[addrB].B_value = coreSize1;
         display_dec(addrB);
+        VIZ_DEC(addrB);
 #ifdef RWLIMIT
         display_read(raddrB);
+        VIZ_READ(raddrB);
 #endif
         if (IR.B_value == 1)
           break;
@@ -1028,8 +1117,10 @@ void simulator1() {
         if (ISNEG(--memory[addrB].A_value))
           memory[addrB].A_value = coreSize1;
         display_dec(addrB);
+        VIZ_DEC(addrB);
 #ifdef RWLIMIT
         display_read(raddrB);
+        VIZ_READ(raddrB);
 #endif
 #ifdef NEW_MODES
         if ((AB_Value == 1) && (IR.B_value == 1))
@@ -1046,7 +1137,9 @@ void simulator1() {
 #endif
       case OP(CMP, mA):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (ADDRB_AVALUE != ADDRA_AVALUE)
           break;
         ADDMOD(progCnt, 2, temp);
@@ -1057,7 +1150,9 @@ void simulator1() {
 #endif
       case OP(CMP, mI):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if ((memory[raddrB].opcode != memory[addrA].opcode) ||
             (memory[raddrB].A_mode != memory[addrA].A_mode) ||
             (memory[raddrB].B_mode != memory[addrA].B_mode))
@@ -1068,7 +1163,9 @@ void simulator1() {
 #endif
       case OP(CMP, mF):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (ADDRB_AVALUE != ADDRA_AVALUE)
           break;
           /* FALLTHRU */
@@ -1077,7 +1174,9 @@ void simulator1() {
 #endif
       case OP(CMP, mB):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (IR.B_value != IR.A_value)
           break;
         ADDMOD(progCnt, 2, temp);
@@ -1088,7 +1187,9 @@ void simulator1() {
 #endif
       case OP(CMP, mAB):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (IR.B_value != ADDRA_AVALUE)
           break;
         ADDMOD(progCnt, 2, temp);
@@ -1099,7 +1200,9 @@ void simulator1() {
 #endif
       case OP(CMP, mX):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (IR.B_value != ADDRA_AVALUE)
           break;
           /* FALLTHRU */
@@ -1108,7 +1211,9 @@ void simulator1() {
 #endif
       case OP(CMP, mBA):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (ADDRB_AVALUE != IR.A_value)
           break;
         ADDMOD(progCnt, 2, temp);
@@ -1117,7 +1222,9 @@ void simulator1() {
 #ifdef NEW_OPCODES
       case OP(SNE, mA):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (ADDRB_AVALUE != ADDRA_AVALUE)
           goto skip;
         break;
@@ -1127,7 +1234,9 @@ void simulator1() {
 
       case OP(SNE, mI):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if ((memory[raddrB].opcode != memory[addrA].opcode) ||
             (memory[raddrB].A_mode != memory[addrA].A_mode) ||
             (memory[raddrB].B_mode != memory[addrA].B_mode))
@@ -1135,33 +1244,43 @@ void simulator1() {
         /* FALLTHRU */
       case OP(SNE, mF):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (ADDRB_AVALUE != ADDRA_AVALUE)
           goto skip;
         /* FALLTHRU */
       case OP(SNE, mB):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (IR.B_value != IR.A_value)
           goto skip;
         break;
 
       case OP(SNE, mAB):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (IR.B_value != ADDRA_AVALUE)
           goto skip;
         break;
 
       case OP(SNE, mX):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (IR.B_value != ADDRA_AVALUE)
           goto skip;
         /* FALLTHRU */
       case OP(SNE, mBA):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (ADDRB_AVALUE != IR.A_value)
           goto skip;
         break;
@@ -1169,7 +1288,9 @@ void simulator1() {
 
       case OP(SLT, mA):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (ADDRB_AVALUE <= ADDRA_AVALUE)
           break;
         ADDMOD(progCnt, 2, temp);
@@ -1178,13 +1299,17 @@ void simulator1() {
       case OP(SLT, mF):
       case OP(SLT, mI):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (ADDRB_AVALUE <= ADDRA_AVALUE)
           break;
         /* FALLTHRU */
       case OP(SLT, mB):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (IR.B_value <= IR.A_value)
           break;
         ADDMOD(progCnt, 2, temp);
@@ -1192,7 +1317,9 @@ void simulator1() {
 
       case OP(SLT, mAB):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (IR.B_value <= ADDRA_AVALUE)
           break;
         ADDMOD(progCnt, 2, temp);
@@ -1200,13 +1327,17 @@ void simulator1() {
 
       case OP(SLT, mX):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (IR.B_value <= ADDRA_AVALUE)
           break;
         /* FALLTHRU */
       case OP(SLT, mBA):
         display_read(raddrB);
+        VIZ_READ(raddrB);
         display_read(addrA);
+        VIZ_READ(addrA);
         if (ADDRB_AVALUE <= IR.A_value)
           break;
         ADDMOD(progCnt, 2, temp);
@@ -1238,6 +1369,7 @@ void simulator1() {
           goto nopush;
         ++W->tasks;
         display_spl(W - warrior, W->tasks);
+        VIZ_SPL(W - warrior, W->tasks);
         push(addrA);
         goto nopush;
 
@@ -1250,9 +1382,11 @@ void simulator1() {
       case OP(DAT, mI):
       die:
         display_dat(progCnt, W - warrior, W->tasks);
+        VIZ_DAT(progCnt, W - warrior, W->tasks);
         if (--W->tasks)
           goto nopush;
         display_die(W - warrior);
+        VIZ_DIE(W - warrior);
         W->score[warriorsLeft + warriors - 2]++;
         cycle = cycle - 1 - (cycle - 1) / (warriorsLeft--);
         if (warriorsLeft < 2)
@@ -1283,8 +1417,10 @@ void simulator1() {
 #ifdef PSPACE
       case OP(LDP, mA):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].A_value = get_pspace(ADDRA_AVALUE);
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(LDP, mF):
@@ -1292,24 +1428,31 @@ void simulator1() {
       case OP(LDP, mI):
       case OP(LDP, mB):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].B_value = get_pspace(IR.A_value);
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(LDP, mAB):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].B_value = get_pspace(ADDRA_AVALUE);
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(LDP, mBA):
         display_read(addrA);
+        VIZ_READ(addrA);
         memory[addrB].A_value = get_pspace(IR.A_value);
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       case OP(STP, mA):
         display_read(addrA);
+        VIZ_READ(addrA);
         set_pspace(ADDRB_AVALUE, ADDRA_AVALUE);
         break;
 
@@ -1318,16 +1461,19 @@ void simulator1() {
       case OP(STP, mI):
       case OP(STP, mB):
         display_read(addrA);
+        VIZ_READ(addrA);
         set_pspace(IR.B_value, IR.A_value);
         break;
 
       case OP(STP, mAB):
         display_read(addrA);
+        VIZ_READ(addrA);
         set_pspace(IR.B_value, ADDRA_AVALUE);
         break;
 
       case OP(STP, mBA):
         display_read(addrA);
+        VIZ_READ(addrA);
         set_pspace(ADDRB_AVALUE, IR.A_value);
         break;
 #endif /* PSPACE */
@@ -1389,11 +1535,13 @@ void simulator1() {
           int zapAddr = (zapStart + i) % coreSize;
           memory[zapAddr] = INITIALINST; /* Set to DAT.F $0,$0 */
           display_write(zapAddr);
+          VIZ_WRITE(zapAddr);
         }
       } break;
 
       case OP(MOV, mI):
         display_read(addrA);
+        VIZ_READ(addrA);
 #ifndef SERVER
         if (!copyDebugInfo)
           temp = memory[addrB].debuginfo;
@@ -1408,6 +1556,7 @@ void simulator1() {
         memory[addrB].A_value = AA_Value;
 #endif
         display_write(addrB);
+VIZ_WRITE(addrB);
         break;
 
       default:
@@ -1478,6 +1627,7 @@ void simulator1() {
   }
 
   display_close();
+  viz_close();
 #ifdef PERMUTATE
   if (permbuf) {
     free(permbuf);

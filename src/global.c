@@ -66,6 +66,15 @@ int SWITCH_P;
 #endif
 int SWITCH_A;
 
+/* Visualization recording global variables */
+char *SWITCH_R = NULL;     /* visualization recording filename */
+
+/* Visualization switches */
+int SWITCH_viz = 0;      /* enable visualization output */
+char *SWITCH_vizfile = NULL; /* visualization output file */
+int SWITCH_vizformat = 0; /* visualization format (0=json, 1=csv, 2=xml) */
+int SWITCH_vizstep = 1;   /* visualization step interval */
+
 #if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) ||  \
     defined(XWINGRAPHX)
 int SWITCH_v;
