@@ -377,7 +377,8 @@ extern int useExtRNG;
 extern int SWITCH_b;
 extern int SWITCH_e;
 extern int SWITCH_k;
-extern int SWITCH_8;
+/* SWITCH_8 removed - ICWS '88 mode is now permanently enabled */
+#define SWITCH_8 1 /* ICWS '88 mode is always enabled */
 extern int SWITCH_f;
 extern char *SWITCH_F;
 extern ADDR_T SWITCH_Fnum; /* an integer value of the -F parameter */

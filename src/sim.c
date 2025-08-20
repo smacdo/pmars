@@ -380,6 +380,16 @@ void simulator1() {
       W->taskTail = tempPtr2 + 1;
       *tempPtr2 = (W->position + W->offset) % coreSize;
       W->tasks = 1;
+
+      /* Reset energy for each warrior at the start of each round */
+      if (SWITCH_E) {
+        W->energy = defaultEnergy;
+        W->maxEnergy = defaultEnergy;
+      } else {
+        W->energy = -1; /* Disabled */
+        W->maxEnergy = -1;
+      }
+
       tempPtr2 -= taskNum;
       destPtr = memory + W->position;
       sourcePtr = W->instBank;

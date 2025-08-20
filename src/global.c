@@ -50,7 +50,7 @@ int useExtRNG = 0;
 int SWITCH_e;
 int SWITCH_b;
 int SWITCH_k;
-int SWITCH_8;
+/* SWITCH_8 removed - ICWS '88 mode is now permanently enabled */
 int SWITCH_f;
 char *SWITCH_F;
 ADDR_T SWITCH_Fnum;
