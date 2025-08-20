@@ -396,8 +396,9 @@ void simulator1() {
     display_clear();
 
     /* the inner loop of execution */
-    do {           /* each cycle */
-      usleep(100); // TODO: make this configurable
+    do { /* each cycle */
+      // TODO(cleak): Make this configurable and re-enable.
+      // usleep(100);
       display_cycle();
       // progCnt = *(W->taskHead++);
       // IR = memory[progCnt];        /* copy instruction into register */
@@ -680,7 +681,7 @@ void simulator1() {
         VIZ_READ(addrA);
         memory[addrB].A_value = ADDRA_AVALUE;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(MOV, mF):
@@ -691,7 +692,7 @@ VIZ_WRITE(addrB);
         VIZ_READ(addrA);
         memory[addrB].B_value = IR.A_value;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(MOV, mAB):
@@ -699,7 +700,7 @@ VIZ_WRITE(addrB);
         VIZ_READ(addrA);
         memory[addrB].B_value = ADDRA_AVALUE;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(MOV, mX):
@@ -710,7 +711,7 @@ VIZ_WRITE(addrB);
         VIZ_READ(addrA);
         memory[addrB].A_value = IR.A_value;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(ADD, mA):
@@ -719,7 +720,7 @@ VIZ_WRITE(addrB);
         ADDMOD(ADDRB_AVALUE, ADDRA_AVALUE, temp);
         memory[addrB].A_value = temp;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(ADD, mI):
@@ -733,7 +734,7 @@ VIZ_WRITE(addrB);
         ADDMOD(IR.B_value, IR.A_value, temp);
         memory[addrB].B_value = temp;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(ADD, mAB):
@@ -742,7 +743,7 @@ VIZ_WRITE(addrB);
         ADDMOD(IR.B_value, ADDRA_AVALUE, temp);
         memory[addrB].B_value = temp;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(ADD, mX):
@@ -755,7 +756,7 @@ VIZ_WRITE(addrB);
         ADDMOD(ADDRB_AVALUE, IR.A_value, temp);
         memory[addrB].A_value = temp;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(SUB, mA):
@@ -764,7 +765,7 @@ VIZ_WRITE(addrB);
         SUBMOD(ADDRB_AVALUE, ADDRA_AVALUE, temp);
         memory[addrB].A_value = temp;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(SUB, mI):
@@ -778,7 +779,7 @@ VIZ_WRITE(addrB);
         SUBMOD(IR.B_value, IR.A_value, temp);
         memory[addrB].B_value = temp;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(SUB, mAB):
@@ -787,7 +788,7 @@ VIZ_WRITE(addrB);
         SUBMOD(IR.B_value, ADDRA_AVALUE, temp);
         memory[addrB].B_value = temp;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(SUB, mX):
@@ -800,7 +801,7 @@ VIZ_WRITE(addrB);
         SUBMOD(ADDRB_AVALUE, IR.A_value, temp);
         memory[addrB].A_value = temp;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
         /* the cast prevents overflow */
@@ -809,7 +810,7 @@ VIZ_WRITE(addrB);
         VIZ_READ(addrA);
         memory[addrB].A_value = (U32_T)ADDRB_AVALUE * ADDRA_AVALUE % coreSize;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(MUL, mI):
@@ -821,7 +822,7 @@ VIZ_WRITE(addrB);
         VIZ_READ(addrA);
         memory[addrB].B_value = (U32_T)IR.B_value * IR.A_value % coreSize;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(MUL, mAB):
@@ -829,7 +830,7 @@ VIZ_WRITE(addrB);
         VIZ_READ(addrA);
         memory[addrB].B_value = (U32_T)IR.B_value * ADDRA_AVALUE % coreSize;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(MUL, mX):
@@ -840,7 +841,7 @@ VIZ_WRITE(addrB);
         VIZ_READ(addrA);
         memory[addrB].A_value = (U32_T)ADDRB_AVALUE * IR.A_value % coreSize;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(DIV, mA):
@@ -850,7 +851,7 @@ VIZ_WRITE(addrB);
           goto die;
         memory[addrB].A_value = ADDRB_AVALUE / ADDRA_AVALUE;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(DIV, mB):
@@ -860,7 +861,7 @@ VIZ_WRITE(addrB);
           goto die;
         memory[addrB].B_value = IR.B_value / IR.A_value;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(DIV, mAB):
@@ -870,7 +871,7 @@ VIZ_WRITE(addrB);
           goto die;
         memory[addrB].B_value = IR.B_value / ADDRA_AVALUE;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(DIV, mBA):
@@ -880,7 +881,7 @@ VIZ_WRITE(addrB);
           goto die;
         memory[addrB].A_value = ADDRB_AVALUE / IR.A_value;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(DIV, mI):
@@ -890,19 +891,19 @@ VIZ_WRITE(addrB);
         if (ADDRA_AVALUE) {
           memory[addrB].A_value = ADDRB_AVALUE / ADDRA_AVALUE;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           if (!IR.A_value)
             goto die;
           memory[addrB].B_value = IR.B_value / IR.A_value;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           break;
         } else {
           if (!IR.A_value)
             goto die;
           memory[addrB].B_value = IR.B_value / IR.A_value;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           goto die;
         }
       case OP(DIV, mX):
@@ -911,19 +912,19 @@ VIZ_WRITE(addrB);
         if (IR.A_value) {
           memory[addrB].A_value = ADDRB_AVALUE / IR.A_value;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           if (!ADDRA_AVALUE)
             goto die;
           memory[addrB].B_value = IR.B_value / ADDRA_AVALUE;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           break;
         } else {
           if (!ADDRA_AVALUE)
             goto die;
           memory[addrB].B_value = IR.B_value / ADDRA_AVALUE;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           goto die;
         }
 
@@ -934,7 +935,7 @@ VIZ_WRITE(addrB);
           goto die;
         memory[addrB].A_value = ADDRB_AVALUE % ADDRA_AVALUE;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(MOD, mB):
@@ -944,7 +945,7 @@ VIZ_WRITE(addrB);
           goto die;
         memory[addrB].B_value = IR.B_value % IR.A_value;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(MOD, mAB):
@@ -954,7 +955,7 @@ VIZ_WRITE(addrB);
           goto die;
         memory[addrB].B_value = IR.B_value % ADDRA_AVALUE;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(MOD, mBA):
@@ -964,7 +965,7 @@ VIZ_WRITE(addrB);
           goto die;
         memory[addrB].A_value = ADDRB_AVALUE % IR.A_value;
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(MOD, mI):
@@ -974,19 +975,19 @@ VIZ_WRITE(addrB);
         if (ADDRA_AVALUE) {
           memory[addrB].A_value = ADDRB_AVALUE % ADDRA_AVALUE;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           if (!IR.A_value)
             goto die;
           memory[addrB].B_value = IR.B_value % IR.A_value;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           break;
         } else {
           if (!IR.A_value)
             goto die;
           memory[addrB].B_value = IR.B_value % IR.A_value;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           goto die;
         }
 
@@ -996,19 +997,19 @@ VIZ_WRITE(addrB);
         if (IR.A_value) {
           memory[addrB].A_value = ADDRB_AVALUE % IR.A_value;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           if (!ADDRA_AVALUE)
             goto die;
           memory[addrB].B_value = IR.B_value % ADDRA_AVALUE;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           break;
         } else {
           if (!ADDRA_AVALUE)
             goto die;
           memory[addrB].B_value = IR.B_value % ADDRA_AVALUE;
           display_write(addrB);
-VIZ_WRITE(addrB);
+          VIZ_WRITE(addrB);
           goto die;
         }
 
@@ -1420,7 +1421,7 @@ VIZ_WRITE(addrB);
         VIZ_READ(addrA);
         memory[addrB].A_value = get_pspace(ADDRA_AVALUE);
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(LDP, mF):
@@ -1431,7 +1432,7 @@ VIZ_WRITE(addrB);
         VIZ_READ(addrA);
         memory[addrB].B_value = get_pspace(IR.A_value);
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(LDP, mAB):
@@ -1439,7 +1440,7 @@ VIZ_WRITE(addrB);
         VIZ_READ(addrA);
         memory[addrB].B_value = get_pspace(ADDRA_AVALUE);
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(LDP, mBA):
@@ -1447,7 +1448,7 @@ VIZ_WRITE(addrB);
         VIZ_READ(addrA);
         memory[addrB].A_value = get_pspace(IR.A_value);
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       case OP(STP, mA):
@@ -1556,7 +1557,7 @@ VIZ_WRITE(addrB);
         memory[addrB].A_value = AA_Value;
 #endif
         display_write(addrB);
-VIZ_WRITE(addrB);
+        VIZ_WRITE(addrB);
         break;
 
       default:
