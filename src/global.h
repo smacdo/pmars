@@ -393,6 +393,9 @@ extern int SWITCH_P;
 #endif
 extern int SWITCH_A;
 
+/* Visualization recording global variables */
+extern char *SWITCH_R;      /* visualization recording filename */
+
 extern int inCdb;
 extern int debugState;
 extern int copyDebugInfo;
@@ -418,6 +421,17 @@ extern ADDR_T pSpaceSize;
 extern int SWITCH_E;        /* enable energy system */
 extern long defaultEnergy;  /* default energy per warrior */
 extern int energyCosts[21]; /* energy costs per opcode */
+
+/* Simulator global variables (for visualization) */
+extern warrior_struct *W;         /* current warrior being executed */
+#ifdef DOS16
+extern mem_struct far *memory;    /* memory array */
+#else
+extern mem_struct *memory;        /* memory array */
+#endif
+
+extern ADDR_T progCnt;            /* program counter */
+extern long cycle;                /* current cycle number */
 
 /* ***********************************************************************
    display define's, declarations and typedefs
