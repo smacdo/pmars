@@ -67,13 +67,13 @@ int SWITCH_P;
 int SWITCH_A;
 
 /* Visualization recording global variables */
-char *SWITCH_R = NULL;     /* visualization recording filename */
+char *SWITCH_R = NULL; /* visualization recording filename */
 
 /* Visualization switches */
-int SWITCH_viz = 0;      /* enable visualization output */
+int SWITCH_viz = 0;          /* enable visualization output */
 char *SWITCH_vizfile = NULL; /* visualization output file */
-int SWITCH_vizformat = 0; /* visualization format (0=json, 1=csv, 2=xml) */
-int SWITCH_vizstep = 1;   /* visualization step interval */
+int SWITCH_vizformat = 0;    /* visualization format (0=json, 1=csv, 2=xml) */
+int SWITCH_vizstep = 1;      /* visualization step interval */
 
 #if defined(DOSTXTGRAPHX) || defined(DOSGRXGRAPHX) || defined(LINUXGRAPHX) ||  \
     defined(XWINGRAPHX)
@@ -118,28 +118,28 @@ ADDR_T *pSpace[MAXWARRIOR];
 ADDR_T pSpaceSize;
 
 /* Energy system global variables */
-int SWITCH_E = 0; /* energy system disabled by default */
+int SWITCH_E = 1; /* energy system enabled by default */
 long defaultEnergy = DEFAULT_ENERGY;
 int energyCosts[21] = {
-    ENERGY_COST_MOV, /* MOV */
-    ENERGY_COST_ADD, /* ADD */
-    ENERGY_COST_SUB, /* SUB */
-    ENERGY_COST_MUL, /* MUL */
-    ENERGY_COST_DIV, /* DIV */
-    ENERGY_COST_MOD, /* MOD */
-    ENERGY_COST_JMZ, /* JMZ */
-    ENERGY_COST_JMN, /* JMN */
-    ENERGY_COST_DJN, /* DJN */
-    ENERGY_COST_CMP, /* CMP */
-    ENERGY_COST_SLT, /* SLT */
-    ENERGY_COST_SPL, /* SPL */
-    ENERGY_COST_DAT, /* DAT */
-    ENERGY_COST_JMP, /* JMP */
-    ENERGY_COST_SEQ, /* SEQ */
-    ENERGY_COST_SNE, /* SNE */
-    ENERGY_COST_NOP, /* NOP */
-    ENERGY_COST_LDP, /* LDP */
-    ENERGY_COST_STP, /* STP */
-    ENERGY_COST_SLP, /* SLP */
-    ENERGY_COST_ZAP  /* ZAP */
+    ENERGY_COST_MOV,     /* MOV */
+    ENERGY_COST_ADD,     /* ADD */
+    ENERGY_COST_SUB,     /* SUB */
+    ENERGY_COST_MUL,     /* MUL */
+    ENERGY_COST_DIV,     /* DIV */
+    ENERGY_COST_MOD,     /* MOD */
+    ENERGY_COST_JMZ,     /* JMZ */
+    ENERGY_COST_JMN,     /* JMN */
+    ENERGY_COST_DJN,     /* DJN */
+    ENERGY_COST_CMP,     /* CMP */
+    ENERGY_COST_SLT,     /* SLT */
+    ENERGY_COST_SPL,     /* SPL */
+    ENERGY_COST_DAT,     /* DAT */
+    ENERGY_COST_JMP,     /* JMP */
+    ENERGY_COST_SEQ,     /* SEQ */
+    ENERGY_COST_SNE,     /* SNE */
+    ENERGY_COST_NOP,     /* NOP */
+    ENERGY_COST_LDP,     /* LDP */
+    ENERGY_COST_STP,     /* STP */
+    ENERGY_COST_SLP,     /* SLP */
+    ENERGY_COST_ZAP_BASE /* ZAP */
 };

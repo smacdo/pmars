@@ -1521,11 +1521,21 @@ void simulator1() {
         if (zapCount < 0)
           zapCount = 0;
 
-        /* Deduct additional energy: 3 * number of locations zeroed */
+        /* Calculate exponential energy cost: 4 + 2^n where n = zapCount */
         if (SWITCH_E && zapCount > 0) {
-          W->energy -=
-              (zapCount - 1) *
-              ENERGY_COST_ZAP; /* -1 because base cost already deducted */
+          long exponentialCost = ENERGY_COST_ZAP_BASE;
+
+          /* Calculate 2^zapCount, but prevent overflow */
+          if (zapCount < 32) { /* 2^32 would overflow long */
+            exponentialCost += (1L << zapCount);
+          } else {
+            /* For very large zapCount, use maximum cost to prevent overflow */
+            exponentialCost = LONG_MAX;
+          }
+
+          /* Subtract 1 because base cost already deducted above */
+          W->energy -= (exponentialCost - 1);
+
           if (W->energy <= 0) {
             goto die; /* Warrior runs out of energy */
           }

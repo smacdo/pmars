@@ -266,7 +266,7 @@ enum modifier {
 };
 
 /* Default energy costs per instruction (can be overridden) */
-#define DEFAULT_ENERGY 1000
+#define DEFAULT_ENERGY 80000
 #define ENERGY_COST_MOV 1
 #define ENERGY_COST_ADD 2
 #define ENERGY_COST_SUB 2
@@ -287,8 +287,8 @@ enum modifier {
 #define ENERGY_COST_LDP 3
 #define ENERGY_COST_STP 3
 #define ENERGY_COST_SLP 1
-#define ENERGY_COST_ZAP 3 /* base cost, multiplied by memory locations zeroed  \
-                           */
+#define ENERGY_COST_ZAP_BASE 4 /* base cost for ZAP instruction */
+/* ZAP uses exponential cost: 4 + 2^n where n is number of cells zapped */
 
 #ifdef SMALLMEM
 typedef unsigned short ADDR_T;
@@ -394,7 +394,7 @@ extern int SWITCH_P;
 extern int SWITCH_A;
 
 /* Visualization recording global variables */
-extern char *SWITCH_R;      /* visualization recording filename */
+extern char *SWITCH_R; /* visualization recording filename */
 
 extern int inCdb;
 extern int debugState;
@@ -423,15 +423,15 @@ extern long defaultEnergy;  /* default energy per warrior */
 extern int energyCosts[21]; /* energy costs per opcode */
 
 /* Simulator global variables (for visualization) */
-extern warrior_struct *W;         /* current warrior being executed */
+extern warrior_struct *W; /* current warrior being executed */
 #ifdef DOS16
-extern mem_struct far *memory;    /* memory array */
+extern mem_struct far *memory; /* memory array */
 #else
-extern mem_struct *memory;        /* memory array */
+extern mem_struct *memory; /* memory array */
 #endif
 
-extern ADDR_T progCnt;            /* program counter */
-extern long cycle;                /* current cycle number */
+extern ADDR_T progCnt; /* program counter */
+extern long cycle;     /* current cycle number */
 
 /* ***********************************************************************
    display define's, declarations and typedefs
