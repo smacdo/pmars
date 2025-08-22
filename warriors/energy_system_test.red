@@ -1,6 +1,7 @@
 ;name Energy System Test
 ;author Test
 ;strategy Test the new energy system with 80,000 initial energy and ZAP exponential costs
+;assert CORESIZE == 8000
 
 start   SLP #100      ; Sleep for 100 cycles (only 1 energy)
         ZAP $10, #1   ; Cost: 4 + 2^1 = 6 energy
