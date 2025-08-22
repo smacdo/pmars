@@ -380,6 +380,7 @@ extern int SWITCH_k;
 /* SWITCH_8 removed - ICWS '88 mode is now permanently enabled */
 #define SWITCH_8 1 /* ICWS '88 mode is always enabled */
 extern int SWITCH_f;
+extern int SWITCH_g; /* graphics display enable flag */
 extern char *SWITCH_F;
 extern ADDR_T SWITCH_Fnum; /* an integer value of the -F parameter */
 extern int SWITCH_V;

@@ -516,6 +516,7 @@ char **largv;
 #if defined(VMS)
   record('D', clp_bool, &SWITCH_D, 0, 1, 0, optDIAOutput);
 #endif
+  record('g', clp_bool, &SWITCH_g, 0, 1, 0, "Enable graphics display (ncurses)");
   record('T', clp_str, &SWITCH_R, 0, 0, 0, "record simulation to file");
   record((char)0, (clp_dtype_t)0, NULL, 0, 0, 0, NULL);
   /*******************************************************************/

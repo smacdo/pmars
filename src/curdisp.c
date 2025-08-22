@@ -114,22 +114,22 @@ do {\
 #define display_die(warnum)
 #define display_push(val)
 #define display_init()      cur_display_init()
-#define display_cycle()     cur_display_cycle()
-#define display_clear()     text_display_clear()
-#define display_read(addr) do { if (displayLevel > 3)\
+#define display_cycle()     do { if (SWITCH_g) cur_display_cycle(); } while(0)
+#define display_clear()     do { if (SWITCH_g) text_display_clear(); } while(0)
+#define display_read(addr) do { if (SWITCH_g && displayLevel > 3)\
         cur_display_read(addr); } while(0)
-#define display_write(addr) do { if (displayLevel > 1)\
+#define display_write(addr) do { if (SWITCH_g && displayLevel > 1)\
         cur_display_write(addr); } while(0)
-#define display_dec(addr) do { if (displayLevel > 2)\
+#define display_dec(addr) do { if (SWITCH_g && displayLevel > 2)\
         cur_display_dec(addr); } while(0)
-#define display_inc(addr) do { if (displayLevel > 2)\
+#define display_inc(addr) do { if (SWITCH_g && displayLevel > 2)\
         cur_display_inc(addr); } while(0)
-#define display_exec(addr) do { if (displayLevel > 0)\
+#define display_exec(addr) do { if (SWITCH_g && displayLevel > 0)\
         cur_display_exec(addr); } while(0)
 #define display_spl(warrior,tasks)
-#define display_dat(addr,warrior,tasks) do { if (displayLevel > 0)\
+#define display_dat(addr,warrior,tasks) do { if (SWITCH_g && displayLevel > 0)\
         cur_display_dat(addr,warrior,tasks); } while(0)
-#define display_close()     text_display_close()
+#define display_close()     do { if (SWITCH_g) text_display_close(); } while(0)
 
 #define cur_display_read(addr) \
  PUT_ARENA(addr, '.');

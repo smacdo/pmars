@@ -320,7 +320,10 @@ void simulator1() {
     seed *= warriors; /* get table index from position */
 #endif
 
-  display_init();
+  /* Initialize graphics display only if explicitly enabled with -g flag */
+  if (SWITCH_g) {
+    display_init();
+  }
   viz_init(); /* Initialize visualization recording */
 
   sim_round = 1;

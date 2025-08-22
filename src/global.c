@@ -52,6 +52,7 @@ int SWITCH_b;
 int SWITCH_k;
 /* SWITCH_8 removed - ICWS '88 mode is now permanently enabled */
 int SWITCH_f;
+int SWITCH_g; /* graphics display enable flag */
 char *SWITCH_F;
 ADDR_T SWITCH_Fnum;
 int SWITCH_V;

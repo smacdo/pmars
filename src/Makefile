@@ -17,10 +17,21 @@ CC = gcc
 # (7)   -DPERMUTATE                         enables -P switch
 # (9)   -DRWLIMIT                           enables read/write limits
 
+# Configuration note:
+# To enable ncurses graphics support, use: make GRAPHICS=ncurses
 # CFLAGS = -O -DEXT94 -DXWINGRAPHX -DPERMUTATE -DRWLIMIT
-CFLAGS = -O -DEXT94 -DPERMUTATE -DRWLIMIT -DGRAPHX -DCURSESGRAPHX
+
+# Default build without graphics
+CFLAGS = -O -DEXT94 -DPERMUTATE -DRWLIMIT
 LFLAGS = -x
-LIB = -lncurses
+LIB =
+
+# Graphics configuration
+ifeq ($(GRAPHICS),ncurses)
+    CFLAGS += -DGRAPHX -DCURSESGRAPHX
+    LIB = -lncurses
+endif
+
 # LIB = -lcurses -ltermlib		# enable this one for curses display
 # LIB = -lvgagl -lvga			# enable this one for Linux/SVGA
 # LIB = -L/usr/X11R6/lib -lX11		# enable this one for X11
