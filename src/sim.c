@@ -1548,12 +1548,20 @@ void simulator1() {
         if (zapCount < 0)
           zapCount = 0;
 
-        /* Calculate linear energy cost: base cost + zapCount */
+        /* Calculate exponential energy cost: 4 + 2^n where n = zapCount */
         if (SWITCH_E && zapCount > 0) {
-          long additionalCost = zapCount; /* 1 energy per cell zapped */
+          long exponentialCost = ENERGY_COST_ZAP_BASE;
 
-          /* Subtract additional cost (base cost already deducted) */
-          W->energy -= additionalCost;
+          /* Calculate 2^zapCount, but prevent overflow */
+          if (zapCount < 32) { /* 2^32 would overflow long */
+            exponentialCost += (1L << zapCount);
+          } else {
+            /* For very large zapCount, use maximum cost to prevent overflow */
+            exponentialCost = LONG_MAX;
+          }
+
+          /* Subtract 1 because base cost already deducted above */
+          W->energy -= (exponentialCost - 1);
 
           if (W->energy <= 0) {
             goto die; /* Warrior runs out of energy */
