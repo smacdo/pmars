@@ -31,9 +31,6 @@
 #include <time.h>
 #include <unistd.h>
 
-#ifdef unix
-#include <signal.h>
-#endif
 #ifdef DOS16
 #include <dos.h>
 #endif
@@ -1523,41 +1520,58 @@ void simulator1() {
       case OP(ZAP, mF):
       case OP(ZAP, mX):
       case OP(ZAP, mI): {
-        /* ZAP zeros out memory from addrA to addrA + IR.A_value */
-        int zapStart = addrA;
-        int zapCount = IR.A_value;
+        /* ZAP A-operand=count, B-operand=target for consistency */
+        int zapStart;
+        int zapCount;
         int i;
+        mem_struct zapInst;
 
-        /* Limit zap count to prevent excessive energy drain */
-        if (zapCount > coreSize)
-          zapCount = coreSize;
+        /* Get count from A-operand - handle immediate mode correctly */
+        if (memory[progCnt].A_mode == IMMEDIATE) {
+          zapCount =
+              memory[progCnt].A_value; /* Read original immediate value */
+        } else {
+          zapCount = IR.A_value; /* Use evaluated value for other modes */
+        }
+
+        /* Get target from B-operand - handle immediate mode correctly */
+        if (memory[progCnt].B_mode == IMMEDIATE) {
+          zapStart = (progCnt + memory[progCnt].B_value) %
+                     coreSize; /* Immediate offset */
+        } else {
+          zapStart = addrB; /* Use evaluated address for other modes */
+        }
+
+        /* Cap zap count to maximum of 16 cells */
+        if (zapCount > 16)
+          zapCount = 16;
         if (zapCount < 0)
           zapCount = 0;
 
-        /* Calculate exponential energy cost: 4 + 2^n where n = zapCount */
+        /* Calculate linear energy cost: base cost + zapCount */
         if (SWITCH_E && zapCount > 0) {
-          long exponentialCost = ENERGY_COST_ZAP_BASE;
+          long additionalCost = zapCount; /* 1 energy per cell zapped */
 
-          /* Calculate 2^zapCount, but prevent overflow */
-          if (zapCount < 32) { /* 2^32 would overflow long */
-            exponentialCost += (1L << zapCount);
-          } else {
-            /* For very large zapCount, use maximum cost to prevent overflow */
-            exponentialCost = LONG_MAX;
-          }
-
-          /* Subtract 1 because base cost already deducted above */
-          W->energy -= (exponentialCost - 1);
+          /* Subtract additional cost (base cost already deducted) */
+          W->energy -= additionalCost;
 
           if (W->energy <= 0) {
             goto die; /* Warrior runs out of energy */
           }
         }
 
+        /* Initialize ZAP instruction as DAT #0 */
+        zapInst.opcode = DAT << 3 | mB; /* DAT.B */
+        zapInst.A_mode = IMMEDIATE;
+        zapInst.B_mode = IMMEDIATE;
+        zapInst.A_value = 0;
+        zapInst.B_value = 0;
+        zapInst.debuginfo = 0;
+
         /* Zero out the memory locations */
         for (i = 0; i < zapCount; i++) {
           int zapAddr = (zapStart + i) % coreSize;
-          memory[zapAddr] = INITIALINST; /* Set to DAT.F $0,$0 */
+          memory[zapAddr] = zapInst; /* Set to DAT #0 */
           display_write(zapAddr);
           VIZ_WRITE(zapAddr);
         }
