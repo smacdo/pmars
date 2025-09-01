@@ -73,7 +73,7 @@ char   *CDB_PROMPT = "(cdb) ";
     *ch=0; } while(0)
 #define targetSelect(index) (targetID == CORE || targetID == PSP ?\
         index : (targetID == QUEUE ?\
-        queue(index) : (W-warrior==index ? progCnt : *warrior[index].taskHead)))
+        queue(index) : (W-warrior==index ? progCnt : warrior[index].taskHead->pc)))
 #ifdef NEW_STYLE
 #define toupper_(x) (toupper(x))
 #else
@@ -1012,10 +1012,10 @@ queue(index)
     return progCnt;
   else
 #ifdef DOS16
-    return *(QW->taskHead + index - 1);
+    return (QW->taskHead + index - 1)->pc;
 #else
-    return *(QW->taskHead + ((QW->taskHead + index - 1 >= endQueue) ?
-                             (index - 1 - totaltask) : index - 1));
+    return (QW->taskHead + ((QW->taskHead + index - 1 >= endQueue) ?
+                             (index - 1 - totaltask) : index - 1))->pc;
 #endif
 }
 /*---------------------------------------------------------------------------
@@ -1541,7 +1541,7 @@ subst_eval(inpStr, result)
     for (i = warriors - 1; i >= 0; --i) {
       sprintf(outs, "%d", (targetID == QUEUE || targetID == PSP ?
                            0 : (targetID == WARRIOR ?
-                 i : (W - warrior == i ? progCnt : *warrior[i].taskHead))));
+                 i : (W - warrior == i ? progCnt : warrior[i].taskHead->pc))));
       sprintf(outs2, "PC%d", i + 1);
       SWITCHBI;
       substitute(buf[bi1], outs2, outs, buf[bi2]);
@@ -1869,9 +1869,9 @@ void
 print_registers()
 {
 #ifdef DOS16
-  ADDR_T far *thisProc;
+  TaskEntry far *thisProc;
 #else
-  ADDR_T *thisProc;
+  TaskEntry *thisProc;
 #endif
   int     nFuture, nPast, count, taskHalf = (coreSize <= 10000 ? 7 : 5);
 
@@ -1896,7 +1896,7 @@ print_registers()
   else
     thisProc = W->taskTail - nPast;
   for (; thisProc < W->taskTail;) {
-    sprintf(outs, "%d ", *thisProc);
+    sprintf(outs, "%d ", thisProc->pc);
     cdb_fputs(outs, COND);
 #ifdef DOS16
     ++thisProc;
@@ -1909,7 +1909,7 @@ print_registers()
     sprintf(outs, "[%d]-> ", progCnt);
     cdb_fputs(outs, COND);
     for (thisProc = W->taskHead, count = 1; count < nFuture; count++) {
-      sprintf(outs, "%d ", *thisProc);
+      sprintf(outs, "%d ", thisProc->pc);
       cdb_fputs(outs, COND);
 #ifdef DOS16
       ++thisProc;
@@ -1948,7 +1948,7 @@ print_registers()
     else
       thisProc = W2->taskTail - nPast;
     for (; thisProc < W2->taskTail;) {
-      sprintf(outs, "%d ", *thisProc);
+      sprintf(outs, "%d ", thisProc->pc);
       cdb_fputs(outs, COND);
 #ifdef DOS16
       ++thisProc;
@@ -1958,7 +1958,7 @@ print_registers()
 #endif
     }
     thisProc = W2->taskHead;
-    sprintf(outs, "[%d]-> ", *thisProc);
+    sprintf(outs, "[%d]-> ", thisProc->pc);
     cdb_fputs(outs, COND);
     for (count = 1; count < nFuture; count++) {
 #ifdef DOS16
@@ -1967,7 +1967,7 @@ print_registers()
       if (++thisProc == endQueue)
         thisProc = taskQueue;
 #endif
-      sprintf(outs, "%d ", *thisProc);
+      sprintf(outs, "%d ", thisProc->pc);
       cdb_fputs(outs, COND);
     }
     if (W2->tasks > (taskHalf * 2))
@@ -2016,7 +2016,7 @@ edit_core(start, stop)
       sprintf(outs, "%-4d->%05d   ", start, queue(start));
     else if (targetID == WARRIOR)
       sprintf(outs, "#%-2d:  %05d   ", start,
-              (W - warrior == start ? progCnt : *warrior[start].taskHead));
+              (W - warrior == start ? progCnt : warrior[start].taskHead->pc));
     else if (targetID == PSP)
       sprintf(outs, "[%4d]=", start);
     else                        /* targetID == CORE */
@@ -2392,7 +2392,7 @@ warriorview(loc, outp)
   char   *outp;
 {
   char    buf[MAXSTR];
-  ADDR_T  wloc = (W - warrior == loc ? progCnt : *warrior[loc].taskHead);
+  ADDR_T  wloc = (W - warrior == loc ? progCnt : warrior[loc].taskHead->pc);
 
   sprintf(outp, "#%-2d:  %05d   %s\n", loc, wloc, cellview(memory + wloc, buf, 0));
   return (outp);

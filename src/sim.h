@@ -98,9 +98,9 @@ extern warrior_struct *W; /* indicate which warrior is running */
 extern char alloc_p;
 extern int warriorsLeft;
 
-extern ADDR_T FAR *endQueue;
+extern TaskEntry FAR *endQueue;
 extern mem_struct FAR *memory;
-extern ADDR_T FAR *taskQueue;
+extern TaskEntry FAR *taskQueue;
 extern warrior_struct *endWar;
 extern U32_T totaltask;
 

@@ -207,14 +207,10 @@ extern PMARS_FATAL, PMARS_BADCOMLIN, PMARS_PARSEERR;
 #endif
 #endif
 
+#define MAXWARRIOR 1000 /* Maximum number of warriors allowed */
 #define MAXTASKNUM INT_MAX
 #define MAXROUND INT_MAX
 #define MAXCYCLE LONG_MAX
-#ifdef DOS16
-#define MAXWARRIOR 8
-#else
-#define MAXWARRIOR 36
-#endif
 #define MAXINSTR 1000
 
 #define MAXSEPARATION MAXCORESIZE / MAXWARRIOR
@@ -265,6 +261,7 @@ enum modifier {
   mI   /* .I */
 };
 
+
 /* Default energy costs per instruction (can be overridden) */
 #define DEFAULT_ENERGY 80000
 #define ENERGY_COST_MOV 1
@@ -290,6 +287,15 @@ enum modifier {
 #define ENERGY_COST_ZAP_BASE 4 /* base cost for ZAP instruction */
 /* ZAP uses exponential cost: 4 + 2^n where n is number of cells zapped */
 
+/* ICWS 88 and instruction limits */
+#define ICWS88_MAX_TASKS_PER_WARRIOR                                           \
+  8000                      /* ICWS 88 specification task limit                \
+                             */
+#define MAX_SLEEP_CYCLES 10 /* Maximum sleep cycles for game balance */
+#define MAX_ZAP_COUNT 16    /* Maximum cells that can be zapped at once */
+#define ZAP_OVERFLOW_LIMIT                                                     \
+  32 /* Prevent 2^n overflow in ZAP energy calculation */
+
 #ifdef SMALLMEM
 typedef unsigned short ADDR_T;
 #define ISNEG(x) ((x) == 0xFFFF) /* use for unsigned ADDR_T */
@@ -307,6 +313,12 @@ typedef unsigned int U32_T; /* unsigned int (32 bits) */
 typedef int S32_T;
 #endif
 
+/* Task queue entry structure - stores task state beyond just PC */
+typedef struct {
+  ADDR_T pc;           /* Program counter (instruction address) */
+  int sleepCounter;    /* Cycles remaining to sleep (0 = active) */
+} TaskEntry;
+
 /* Memory structure */
 typedef struct mem_struct {
   ADDR_T A_value, B_value;
@@ -320,9 +332,9 @@ typedef struct mem_struct {
 typedef struct warrior_struct {
   long pSpaceIDNumber;
 #ifdef DOS16
-  ADDR_T far *taskHead, far *taskTail;
+  TaskEntry far *taskHead, far *taskTail;
 #else
-  ADDR_T *taskHead, *taskTail;
+  TaskEntry *taskHead, *taskTail;
 #endif
   int tasks;
   ADDR_T lastResult;
@@ -336,6 +348,8 @@ typedef struct warrior_struct {
   /* Energy system fields */
   long energy;    /* current energy */
   long maxEnergy; /* initial/maximum energy */
+
+  /* SLP (sleep) system fields now integrated into TaskEntry structure */
 
   char *name; /* warrior name */
   char *version;
@@ -359,7 +373,7 @@ extern char errmsg[MAXALLCHAR];
 /* Some parameters */
 extern int warriors;
 extern ADDR_T coreSize;
-extern int taskNum;
+extern int taskNum; /* Set to 8000 for ICWS 88 compliance */
 extern ADDR_T instrLim;
 extern ADDR_T separation;
 extern int rounds;
