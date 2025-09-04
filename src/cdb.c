@@ -1012,7 +1012,8 @@ queue(index)
     return progCnt;
   else
 #ifdef DOS16
-    return (QW->taskHead + index - 1)->pc;
+    return (QW->taskHead + ((QW->taskHead + index - 1 >= endQueue) ?
+                             (index - 1 - totaltask) : index - 1))->pc;
 #else
     return (QW->taskHead + ((QW->taskHead + index - 1 >= endQueue) ?
                              (index - 1 - totaltask) : index - 1))->pc;
