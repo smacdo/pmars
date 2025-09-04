@@ -110,7 +110,13 @@ extern void sighandler(int dummy);
 #endif
 
 #ifdef DOS16
-#define push(val) do { W->taskTail->pc = (val); W->taskTail->sleepCounter = 0; W->taskTail++; } while(0)
+#define push(val)                                                              \
+  do {                                                                         \
+    W->taskTail->pc = (val);                                                   \
+    W->taskTail->sleepCounter = 0;                                             \
+    if (++W->taskTail == endQueue)                                             \
+      W->taskTail = taskQueue;                                                 \
+  } while(0)
 #else
 #define push(val)                                                              \
   do {                                                                         \
@@ -437,8 +443,8 @@ void simulator1() {
         
         /* Debug: print sleep counter */
         if (debugState) {
-          fprintf(stderr, "Task sleeping: PC=%d, sleepCounter=%d->%d\n", 
-                  progCnt, currentTask->sleepCounter + 1, currentTask->sleepCounter);
+          fprintf(stderr, "Warrior %ld task sleeping: PC=%d, sleepCounter=%d->%d\n", 
+                  W - warrior, progCnt, currentTask->sleepCounter + 1, currentTask->sleepCounter);
         }
         
         /* Push the same PC back but preserve the sleep counter */
@@ -1547,16 +1553,13 @@ void simulator1() {
 
         /* Debug: print sleep setup */
         if (debugState) {
-          fprintf(stderr, "SLP: Setting sleep for %d cycles (requested %d)\n", 
-                  sleepCycles, IR.A_value);
+          fprintf(stderr, "Warrior %ld SLP: Setting sleep for %d cycles (requested %d)\n", 
+                  W - warrior, sleepCycles, IR.A_value);
         }
 
         /* IMPORTANT: This implementation now directly uses the TaskEntry structure
          * to track sleeping tasks, eliminating the need for complex indexing.
          */
-        
-        /* Set sleep counter on the current task directly */
-        currentTask->sleepCounter = sleepCycles;
         
         /* Push next instruction but preserve the sleep counter */
         temp = progCnt + 1;
@@ -1594,7 +1597,8 @@ void simulator1() {
         /* Cap zap count to maximum allowed cells - game balance limit */
         if (zapCount > 16)
           zapCount = 16; /* Maximum 16 cells can be zapped */
-        if (zapCount < 0)
+        /* Use ISNEG macro to handle both signed and unsigned ADDR_T */
+        if (ISNEG(zapCount))
           zapCount = 0;
 
         /* Calculate exponential energy cost: 4 + 2^n where n = zapCount */
