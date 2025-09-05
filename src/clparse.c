@@ -71,7 +71,8 @@ extern char *credits_screen1, *credits_screen2, *credits_screen3, *usage_screen,
     *optSort, *optView, *optScoreFormula, *optDIAOutput, *noWarriorFile,
     *fFExclusive, *coreSizeTooSmall, *dLessThanl, *FLessThand, *outOfMemory,
     *badScoreFormula, *optPSpaceSize, *pSpaceTooBig, *optPermutate,
-    *permutateMultiWarrior, *optAssemble, *optEnergy, *optEnergyAmount;
+    *permutateMultiWarrior, *optAssemble, *optEnergy, *optEnergyAmount,
+    *optRecord;
 
 #ifdef RWLIMIT
 extern char *optReadLimit, *optWriteLimit, *badRWLimit;
@@ -458,7 +459,7 @@ char **largv;
    ********************************************************************/
 
 #define OPTNUM                                                                 \
-  24 /* don't forget to increase when adding new                               \
+  25 /* don't forget to increase when adding new                               \
       * options */
   static clp_opt_t options[OPTNUM];
   int optI = 0; /* used by record() macro */
@@ -481,7 +482,7 @@ char **largv;
   record('p', clp_int, &taskNum, 1, MAXTASKNUM, DEFAULTTASKNUM, optProcesses);
   record('k', clp_bool, &SWITCH_k, 0, 1, 0, optKotH);
   record('l', clp_addr, &instrLim, 1, MAXINSTR, DEFAULTINSTRLIM, optLength);
-  record('8', clp_bool, &SWITCH_8, 0, 1, 0, opt88);
+  /* -8 flag removed: ICWS '88 mode is permanently enabled */
   record('d', clp_addr, &separation, 1, MAXSEPARATION, 0, optDistance);
   record('f', clp_bool, &SWITCH_f, 0, 1, 0, optFixedSeries);
   record('F', clp_str, &SWITCH_F, 0, MAXCORESIZE, 0, optFixedPosition);
@@ -497,7 +498,7 @@ char **largv;
   record('W', clp_addr, &writeLimit, 1, MAXCORESIZE, 0, optReadLimit);
 #endif
   record('A', clp_bool, &SWITCH_A, 0, 1, 0, optAssemble);
-  record('E', clp_bool, &SWITCH_E, 0, 1, 0, optEnergy);
+  record('E', clp_bool, &SWITCH_E, 0, 1, 1, optEnergy);
   record('N', clp_long, &defaultEnergy, 1, 2147483647L, DEFAULT_ENERGY,
          optEnergyAmount);
   record('=', clp_str, &SWITCH_eq, 0, 0, 0, optScoreFormula);
@@ -515,6 +516,8 @@ char **largv;
 #if defined(VMS)
   record('D', clp_bool, &SWITCH_D, 0, 1, 0, optDIAOutput);
 #endif
+  record('g', clp_bool, &SWITCH_g, 0, 1, 0, "Enable graphics display (ncurses)");
+  record('T', clp_str, &SWITCH_R, 0, 0, 0, "record simulation to file");
   record((char)0, (clp_dtype_t)0, NULL, 0, 0, 0, NULL);
   /*******************************************************************/
   /* initializing default values                                     */

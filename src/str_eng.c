@@ -433,8 +433,8 @@ char *optReadLimit = "Read limit size";
 char *optWriteLimit = "Write limit size";
 #endif
 char *optAssemble = "Assemble warriors only";
-char *optEnergy = "Enable energy system";
-char *optEnergyAmount = "Initial energy per warrior [1000]";
+char *optEnergy = "Disable energy system (on by default)";
+char *optEnergyAmount = "Initial energy per warrior [80000]";
 #if defined(XWINGRAPHX)
 char *optXOpt[] = {"Display to connect to", "Geometry of the window",
                    "X font to use"};
@@ -472,5 +472,7 @@ char *StartMod = "START MODULE\n";
 char *Opening = "Opening";
 char *EndMod = "END MODULE\n";
 #endif /* VMS */
+
+char *optRecord = "\nrecord simulation to file\n";
 
 #endif /* PMARSLANG == ENGLISH */

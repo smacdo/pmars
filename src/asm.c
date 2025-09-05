@@ -1335,6 +1335,7 @@ mem_struct *cell;
       case ADD:
       case SUB:
       case CMP:
+      case ZAP:
         if (cell->B_mode == (FIELD_T)IMMEDIATE) {
           sprintf(token, "%s [#$@<] [$@<]", opname[opcode]);
           errprn(F88ERR, aline, token);
